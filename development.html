@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>NewPoints - Development</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+<style type="text/css"> 
+<!-- 
+body  {
+	font: 80% Verdana, Arial, Helvetica, sans-serif;
+	background: #CFEEFF;
+	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+	padding: 0;
+	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
+	color: #000000;
+}
+
+a		{text-decoration: none}
+a:link	{color: #00A4FF;}
+a:hover	{color: #00A4FF; }
+a:active	{color: #00A4FF}
+a:visited	{color: #00A4FF}
+
+.twoColLiqRtHdr #container { 
+	width: 80%;  /* this will create a container 80% of the browser width */
+	background: #FFFFFF;
+	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+	border: 1px solid #000000;
+	text-align: left; /* this overrides the text-align: center on the body element. */
+} 
+.twoColLiqRtHdr #header { 
+	background: #00A4FF; 
+	padding: 0 10px;  /* this padding matches the left alignment of the elements in the divs that appear beneath it. If an image is used in the #header instead of text, you may want to remove the padding. */
+} 
+.twoColLiqRtHdr #header h1 {
+	margin: 0; /* zeroing the margin of the last element in the #header div will avoid margin collapse - an unexplainable space between divs. If the div has a border around it, this is not necessary as that also avoids the margin collapse */
+	padding: 10px 0; /* using padding instead of margin will allow you to keep the element away from the edges of the div */
+}
+
+.twoColLiqRtHdr #sidebar1 {
+	float: right; /* since this element is floated, a width must be given */
+	width: 24%; 
+	background: #00A4FF; /* the background color will be displayed for the length of the content in the column, but no further */
+	padding-top: 15px 0; /* top and bottom padding create visual space within this div  */
+	padding-left: 15px 0; /* top and bottom padding create visual space within this div  */
+}
+.twoColLiqRtHdr #sidebar1 h3, .twoColLiqRtHdr #sidebar1 p {
+	margin-left: 10px; /* the left and right margin should be given to every element that will be placed in the side columns */
+	margin-right: 10px;
+}
+
+/* Tips for mainContent:
+1. the space between the mainContent and sidebar1 is created with the right margin on the mainContent div.  No matter how much content the sidebar1 div contains, the column space will remain. You can remove this right margin if you want the #mainContent div's text to fill the #sidebar1 space when the content in #sidebar1 ends.
+2. to avoid float drop at a supported minimum 800 x 600 resolution, elements within the mainContent div should be 430px or smaller (this includes images).
+3. in the Internet Explorer Conditional Comment below, the zoom property is used to give the mainContent "hasLayout." This avoids several IE-specific bugs.
+*/
+.twoColLiqRtHdr #mainContent { 
+	margin: 0 26% 0 10px; /* the left margin should mirror the margin on the header and footer for proper alignment. */
+} 
+
+.twoColLiqRtHdr #footer { 
+	padding: 0 10px; /* this padding matches the left alignment of the elements in the divs that appear above it. */
+	background:#00A4FF; 
+} 
+.twoColLiqRtHdr #footer p {
+	margin: 0; /* zeroing the margins of the first element in the footer will avoid the possibility of margin collapse - a space between divs */
+	padding: 10px 0; /* padding on this element will create space, just as the the margin would have, without the margin collapse issue */
+}
+
+/* Miscellaneous classes for reuse */
+.fltrt { /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
+	float: left;
+	margin-right: 8px;
+}
+.clearfloat { /* this class should be placed on a div or break element and should be the final element before the close of a container that should fully contain a float */
+	clear:both;
+    height:0;
+    font-size: 1px;
+    line-height: 0px;
+}
+--> 
+</style><!--[if IE]>
+<style type="text/css"> 
+/* place css fixes for all versions of IE in this conditional comment */
+.twoColLiqRtHdr #sidebar1 { padding-top: 30px; }
+.twoColLiqRtHdr #mainContent { zoom: 1; padding-top: 15px; }
+/* the above proprietary zoom property gives IE the hasLayout it needs to avoid several bugs */
+</style>
+<![endif]--></head>
+
+<body class="twoColLiqRtHdr">
+
+<div id="container">
+  <div id="header">
+    <h1>NewPoints - Development</h1>
+  <!-- end #header --></div>
+  <div id="sidebar1">
+  <br />
+    <strong><h3>Thanks to:</h3></strong>
+    <ul>
+      <li><a href="http://forums.mybb-plugins.com/user-883.html" style="color: #000000;">Andrew</a></li>
+      <li><a href="http://forums.mybb-plugins.com/user-884.html" style="color: #000000;">Glas</a></li>
+      <li><a href="http://community.mybb.com/user-17052.html" style="color: #000000;">Mark.M</a</li>
+      <li><a href="http://community.mybb.com/user-22890.html" style="color: #000000;">ralgith</a</li>
+	  <li><a href="http://mybbhacks.zingaburga.com/member.php?action=profile&uid=1" style="color: #000000;">ZiNgA BuRgA/Yumi</a></li>
+    </ul>
+      <!-- end #sidebar1 -->
+    </p>
+  </div>
+  <div id="mainContent">
+    <h2>Functions</h2>
+    <p>I've included a set of functions to help developers with development, and some of them are required if they want to avoid writing 10 lines of code for adding each setting, for example.</p>
+    <p>NewPoints comes with a hello world plugin based off MyBB's one as the code is nearly the same. Can be found in inc/plugins/newpoints</p>
+    <p>&nbsp;</p>
+    <ul>
+      <li><strong>newpoints_remove_templates($templates = '')</strong>
+        <ul><li>Deletes templates from the database</li>
+        <li>@param string a list of templates seperated by ',' e.g. 'test','test_again','testing'</li>
+        <li>@param bool false if something went wrong</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_add_template($name = '', $contents = '', $sid = -1)</strong>
+<ul>
+          <li>Adds a new template</li>
+          <li>@param string the title of the template</li>
+          <li>@param string the contents of the template</li>
+          <li>@param integer the sid of the template</li>
+          <li>@param bool false if something went wrong</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_remove_settings($settings = '')</strong>
+<ul>
+          <li>Deletes settings from the database</li>
+          <li>@param string a list of settings seperated by ',' e.g. 'test','test_again','testing'</li>
+          <li>@param bool false if something went wrong</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_add_setting($name = '', $plugin = '', $title = '', $description = '', $type = '', $value = '', $disporder = 0)</strong>
+<ul>
+          <li>Adds a new setting</li>
+          <li>@param string the name (unique identifier) of the setting</li>
+          <li>@param string the codename of plugin which owns the setting ('main' for main setting)</li>
+          <li>@param string the title of the setting</li>
+          <li>@param string the description of the setting</li>
+          <li>@param string the type of the setting ('text', 'textarea', etc...)</li>
+          <li>@param string the value of the setting</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_addpoints($uid, $points, $forumrate = 1, $grouprate = 1, $isstring = false)</strong>
+<ul>
+          <li>Adds/Subtracts points to a user</li>
+          <li>@param integer the id of the user</li>
+          <li>@param float the number of points to add or subtract (if a negative value)</li>
+          <li>@param integer the forum income rate</li>
+          <li>@param integer the user group income rate</li>
+          <li>@param bool if the uid is a string in case we don't have the uid we can update the points field by searching for the user name</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_getrules($type = '', $id = 0)</strong>
+<ul>
+          <li>Get rules of a certain group or forum</li>
+          <li>@param string the type of rule: 'forum' or 'group'</li>
+          <li>@param integer the id of the group or forum</li>
+          <li>@return bool false if something went wrong</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_getallrules($type = '')</strong>
+<ul>
+          <li>Get all rules</li>
+          <li>@param string the type of rule: 'forum' or 'group'</li>
+          <li> @return array containing all rules</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_format_points($points)</strong>
+<ul>
+          <li>Formats points according to the settings</li>
+          <li>@param float the amount of points</li>
+          <li>@return string formated points</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_send_pm($pm, $fromid = 0)</strong>
+<ul>
+          <li>Sends a PM to a user</li>
+          <li>@param array: The PM to be sent; should have 'subject', 'message', 'touid' and 'receivepms' (receivepms is for admin override in case the user has disabled pm's) </li>
+          <li>@param int: from user id (0 if you want to use the uid of the person that sends it. -1 to use MyBB Engine</li>
+          <li>@return bool: true if PM sent</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_getuser_byname($username = '', $fields = '*')</strong>
+<ul>
+          <li>Get the user data of a user name</li>
+          <li>@param string the user name</li>
+          <li>@param string the fields to fetch</li>
+          <li>@return array the user data</li>
+        </ul>
+      </li>
+      <li><strong>newpoints_get_usergroup($gid = 0)</strong>
+<ul>
+          <li>Get the user group data of the gid</li>
+          <li>@param string the user name</li>
+          <li>@param string the fields to fetch</li>
+          <li>@return array the user data</li>
+        </ul>
+      </li>
+      <li><strong>function newpoints_log($action='', $data = '', $username = '', $uid = 0)</strong>
+<ul>
+          <li>Create a new log entry</li>
+          <li>@param string action taken</li>
+          <li>@param string extra data</li>
+          <li>@param username of who's executed the action</li>
+          <li>@param uid of who's executed the action</li>
+          <li>@return bool false if something went wrong </li>
+        </ul>
+      </li>
+      <li><strong>function newpoints_remove_log($action=array())</strong>
+<ul>
+          <li>Removes all log entries based on action</li>
+          <li>@param array action taken</li>
+        </ul>
+      </li>
+      <li><strong>function newpoints_find_replace_templatesets($action=array())</strong>
+<ul>
+          <li>Find and replace a string in a particular template in global templates set</li>
+          <li>@param string The name of the template</li>
+          <li>@param string The regular expression to match in the template</li>
+          <li>@param string The replacement string</li>
+          <li>@return bolean true if matched template name, false if not.</li>
+        </ul>
+      </li>
+    </ul>
+<h2>Support	</h2>
+    <p>If you have any questions, ask them at <a href="http://forums.mybb-plugins.com">MyBB-Plugins.com</a>.</p>
+</div>
+	<br class="clearfloat" />
+  <div id="footer">
+    <p>&copy; 2009-2011 - Pirata Nervo - All Rights Reserved.</p>
+  <!-- end #footer --></div>
+<!-- end #container --></div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+From version 1.9.5 to 1.9.6:
+* Settings are now re-cached when installing/uninstalling/activating/deactivating NewPoints plugins.
+
+From version 1.9.4 to 1.9.5:
+* Fixes minor bugs.
+* Fixed an SQL error which appeared on the ACP.
+* Settings are cached which reduces one query per page.
+* Forum Rules and Group Rules are cached resulting in a performance increase.
+
+From version 1.9.3 to 1.9.4:
+* Fixed an incompatibility issue with MyBB 1.6.6.
+
+From version 1.9.2 to 1.9.3:
+* Fixed bug in the recounting process (related to the income rules).
+
+From version 1.9.1 to 1.9.2:
+* Fixed SQL error in Plugins List and Plugins Updates Check pages.
+
+From version 1.9 to 1.9.1:
+* Fixed problem regarding points count in quick edit and quick reply - would allow users to get unlimited points by changing the characters number.
+
+From version 1.8 to 1.9:
+* Fixed double </span> tag
+* Points to View and Points to Post fields are no longer unsigned. (upgrade script must be run)
+* Now adds NewPoints' settings to $mybb->settings instead of having duplicates in the settings table (for some reason they were being deleted)
+
+From version 1.7 to 1.8:
+* Fixed possible bug in uninstallation, if there was a plugin installed but the file was missing, it would "quit" the uninstallation leaving other plugins installed and possibly causing conflict if you install NewPoints and its plugins again.
+* No longer displays setting groups when there are no settings for that plugin.
+* Split main plugin file into multiple files - takes less time for the parser to read what's actually required.
+* Fixed a small bug in the settings page related to a variable type.
+* BLOG/TEXT has no longer default value (it actually can't have a default value, bad mistake of mine)
+* Sets the collation of the tables on installation to what the user has as default, using MyBB's DB::build_create_table_collation() function.
+
+From version 1.6 to 1.7:
+* Changed TYPE=MyISAM to ENGINE=MyISAM
+* Fixed bug in Donations author.
+
+From version 1.5 to 1.6:
+* Compatible with MyBB 1.6.
+
+From version 1.4 to 1.5:
+* Improvements have been made - thanks zinga.
+* Now plugins can use the Archive's hooks, however the archive_start hook cannot be used - use newpoints_archive_start instead.
+* The bank plugin no longer comes with NewPoints, it must be downloaded from the website separately.
+* Fixed a problem with the latest donations date.
+
+From version 1.3 to 1.4:
+ * Changed the way points are formatted.
+ * Fixed a few other minor bugs.
+
+From version 1.2 to 1.3:
+ * Fixed two minor bugs.
+
+From version 1.1 to 1.2:
+ * Fixed a few bugs.
+
+From version 1.0 to 1.1:
+ * Fixed a bug in forum rules
+ * Fixed a typo in a hook name
+ * Added a new hook "newpoints_admin_load" as plugins can't hook to "admin_load" because they're loaded after that hook is called.
+ * Comes with Shop 1.0 plugin
+ * Increased performance speed by running most of the income queries on shut down and by allowing modules to add points on shut down.
+ * Fixed a bug in forum and group rules that would edit all rules by editing a single one
+ * Added donate reason (optional)
+ * Added points per referral
+ * Added Upgrade system
+ * Added a new function that plugins can use to do templat edits to NewPoints' templates
+ * Now it removes points from users when deleting threads/posts/polls
+ * Fixed some other minor bugs
