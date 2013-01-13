@@ -1,5 +1,10 @@
+From version 1.9.6 to 1.9.7:
+* Fixed a high risk vulnerability (SQL injection).
+* Fixed a bug in the newpoints_addpoints function which wouldn't add/remove points from a user if points had been added/removed in the same page already.
+
 From version 1.9.5 to 1.9.6:
 * Settings are now re-cached when installing/uninstalling/activating/deactivating NewPoints plugins.
+* Group rules now affected points per visit and points for referral.
 
 From version 1.9.4 to 1.9.5:
 * Fixes minor bugs.

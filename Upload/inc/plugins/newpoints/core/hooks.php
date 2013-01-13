@@ -106,7 +106,7 @@ elseif (NP_HOOKS == 2)
 	$plugins->add_hook('datahandler_post_update', 'newpoints_editpost');
 	$plugins->add_hook('xmlhttp', 'newpoints_editpost_xmlhttp');
 	// delete post
-	$plugins->add_hook('class_moderation_delete_post', 'newpoints_deletepost');
+	$plugins->add_hook('class_moderation_delete_post_start', 'newpoints_deletepost');
 	
 	// per new thread
 	$plugins->add_hook('datahandler_post_insert_thread', 'newpoints_newthread');
@@ -147,9 +147,6 @@ elseif (NP_HOOKS == 2)
 	$plugins->add_hook('newthread_start', 'newpoints_blockpost');
 	$plugins->add_hook('newthread_do_newthread_start', 'newpoints_blockpost');
 	
-	// Inline moderation
-	$plugins->add_hook('moderation_start', 'newpoints_inline_delete');
-	
 	// ****************** //
 	// GENERAL HOOKS START //
 	// ****************** //
@@ -170,10 +167,17 @@ elseif (NP_HOOKS == 2)
 	// global_start can't be used by NP plugins
 	function newpoints_plugins_start()
 	{
-		global $plugins, $mybb;
+		global $plugins, $mybb, $mypoints;
 		
 		newpoints_load_plugins();
 		//newpoints_load_settings();
+		
+		if($mybb->user['uid'] > 0)
+		{
+			$mypoints = newpoints_format_points($mybb->user['newpoints']);
+		}
+		else
+			$mypoints = 0;
 		
 		// as plugins can't hook to global_start, we must allow them to hook to global_start
 		$plugins->run_hooks("newpoints_global_start");
@@ -353,7 +357,7 @@ elseif (NP_HOOKS == 2)
 				$bonus = 0;
 			}
 		}
-		else
+		elseif ($newcharcount >= $mybb->settings['newpoints_income_minchar'] && $oldcharcount >= $mybb->settings['newpoints_income_minchar']) 
 		{
 			// calculate bonus based on difference of characters
 			// bonus will be negative as the new message is shorter than the minimum chars
@@ -475,7 +479,7 @@ elseif (NP_HOOKS == 2)
 	// delete post
 	function newpoints_deletepost($pid)
 	{
-		global $db, $mybb, $fid, $post, $thread;
+		global $db, $mybb, $fid;
 		
 		if (!$mybb->user['uid'])
 			return;
@@ -485,6 +489,9 @@ elseif (NP_HOOKS == 2)
 			
 		if ($mybb->settings['newpoints_income_newpost'] == 0)
 			return;
+			
+		$post = get_post((int)$pid);
+		$thread = get_thread($post['tid']);
 		
 		// check forum rules
 		$forumrules = newpoints_getrules('forum', $fid);
@@ -584,8 +591,9 @@ elseif (NP_HOOKS == 2)
 			
 		if ($mybb->settings['newpoints_income_newthread'] == 0)
 			return;
-			
-		$thread = get_thread($tid);
+		
+		// even though the thread was deleted it was previously cached so we can use get_thread
+		$thread = get_thread((int)$tid);
 		$fid = $thread['fid'];
 		
 		// check forum rules
@@ -718,7 +726,24 @@ elseif (NP_HOOKS == 2)
 			newpoints_addpoints(trim($mybb->input['username']), $mybb->settings['newpoints_income_newreg'], 1, 1, true);
 			
 		if ($mybb->settings['newpoints_income_referral'] != 0)
-			newpoints_addpoints(trim($mybb->input['referrername']), $mybb->settings['newpoints_income_referral'], 1, 1, true);
+		{
+			// Grab the referred user's points
+			$query = $db->simple_select('users', 'uid,newpoints', 'username=\''.my_strtolower($db->escape_string(trim($mybb->input['referrername']))).'\'');
+			$user = $db->fetch_array($query);
+			if(empty($user))
+				return;
+			
+			// check group rules - primary group check
+			$grouprules = newpoints_getrules('group', $mybb->user['usergroup']);
+			if (!$grouprules)
+				$grouprules['rate'] = 1; // no rule set so default income rate is 1
+			
+			// if the group rate is 0, nothing is going to be added so let's just leave the function
+			if ($grouprules['rate'] == 0)
+				return;
+			
+			newpoints_addpoints($user['uid'], $mybb->settings['newpoints_income_referral'], 1, $grouprules['rate']);
+		}
 	}
 
 	// new poll vote
@@ -837,21 +862,21 @@ elseif (NP_HOOKS == 2)
 		if ($mybb->settings['newpoints_main_enabled'] != 1)
 			return;
 			
+		// check group rules - primary group check
+		$grouprules = newpoints_getallrules('group');
+		if (empty($grouprules))
+			return;
+			
 		if ($mybb->settings['newpoints_income_pageview'] != 0)
 		{
-			newpoints_addpoints($mybb->user['uid'], $mybb->settings['newpoints_income_pageview'], 1, 1);
+			newpoints_addpoints($mybb->user['uid'], $mybb->settings['newpoints_income_pageview'], 1, $grouprules[$mybb->user['usergroup']]['rate']);
 		}
 		
 		if ($mybb->settings['newpoints_income_visit'] != 0)
 		{
 			if((TIME_NOW - $mybb->user['lastactive']) > 900)
-				newpoints_addpoints($mybb->user['uid'], $mybb->settings['newpoints_income_visit'], 1, 1);
+				newpoints_addpoints($mybb->user['uid'], $mybb->settings['newpoints_income_visit'], 1, $grouprules[$mybb->user['usergroup']]['rate']);
 		}
-
-		// check group rules - primary group check
-		$grouprules = newpoints_getallrules('group');
-		if (empty($grouprules))
-			return;
 		
 		foreach($grouprules as $gid => $rule)
 		{
@@ -873,78 +898,6 @@ elseif (NP_HOOKS == 2)
 			{
 				// run updates to users on shut down
 				add_shutdown('newpoints_update_users');
-			}
-		}
-	}
-	
-	function newpoints_inline_delete()
-	{
-		global $db, $mybb, $pid, $post;
-		
-		if (!$mybb->user['uid'])
-			return;
-		
-		if ($mybb->settings['newpoints_main_enabled'] != 1)
-			return;
-			
-		$fid = intval($mybb->input['fid']);
-			
-		// check forum rules
-		$forumrules = newpoints_getrules('forum', $fid);
-		if (!$forumrules)
-			$forumrules['rate'] = 1; // no rule set so default income rate is 1
-		
-		// if the forum rate is 0, nothing is going to be added so let's just leave the function
-		if ($forumrules['rate'] == 0)
-			return;
-		
-		// check group rules - primary group check
-		$grouprules = newpoints_getrules('group', $mybb->user['usergroup']);
-		if (!$grouprules)
-			$grouprules['rate'] = 1; // no rule set so default income rate is 1
-		
-		// if the group rate is 0, nothing is going to be added so let's just leave the function
-		if ($grouprules['rate'] == 0)
-			return;
-			
-		// we're deleting threads inline
-		if($mybb->input['action'] == "do_multideleteposts")
-		{
-			if ($mybb->settings['newpoints_income_newpost'] == 0)
-				return;
-			
-			$posts = explode('|', $mybb->input['posts']);
-			if(is_array($posts))
-			{
-				foreach($posts as $key => $pid)
-				{
-					$query = $db->simple_select('posts', 'uid,message', 'pid=\''.$pid.'\'');
-					$feched_post = $db->fetch_array($query);
-					
-					// if we have more chars than the limit, we must remove the bonus
-					if (my_strlen($fetched_post['message']) >= $mybb->settings['newpoints_income_minchar'])
-						$bonus = my_strlen($fetched_post['message']) * $mybb->settings['newpoints_income_perchar'];
-					else
-						$bonus = 0;
-					
-					newpoints_addpoints($fetched_post['uid'], -($mybb->settings['newpoints_income_newpost']+$bonus), $forumrules['rate'], $grouprules['rate']);
-				}
-			}
-		}
-		// else if we're deleting posts inline
-		elseif($mybb->input['action'] == "do_multideletethreads")
-		{
-			if ($mybb->settings['newpoints_income_newthread'] == 0)
-				return;
-			
-			$threads = explode('|', $mybb->input['threads']);
-			if(is_array($threads))
-			{
-				foreach($threads as $key => $tid)
-				{
-					$thread = get_thread($tid);
-					newpoints_addpoints($thread['uid'], -($mybb->settings['newpoints_income_newthread']+($thread['replies']*$mybb->settings['newpoints_income_perreply'])), $forumrules['rate'], $grouprules['rate']);
-				}
 			}
 		}
 	}

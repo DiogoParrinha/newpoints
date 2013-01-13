@@ -62,7 +62,7 @@ elseif(THIS_SCRIPT == 'member.php')
     $templatelist .= 'newpoints_profile,newpoints_donate_inline';
 }
 	
-define('NEWPOINTS_VERSION', '1.9.6');
+define('NEWPOINTS_VERSION', '1.9.7');
 
 // load plugins and do other stuff
 if (defined('IN_ADMINCP'))
@@ -284,7 +284,7 @@ function newpoints_addpoints($uid, $points, $forumrate = 1, $grouprate = 1, $iss
 			$db->write_query("UPDATE ".TABLE_PREFIX."users SET newpoints=newpoints+'".floatval(round($points*$forumrate*$grouprate, intval($mybb->settings['newpoints_main_decimal'])))."' WHERE uid='".intval($uid)."'");
 		else
 		{
-			$userpoints[intval($uid)] = floatval(round($points*$forumrate*$grouprate, intval($mybb->settings['newpoints_main_decimal'])));
+			$userpoints[intval($uid)] += floatval(round($points*$forumrate*$grouprate, intval($mybb->settings['newpoints_main_decimal'])));
 			add_shutdown('newpoints_update_addpoints');
 		}
 	}

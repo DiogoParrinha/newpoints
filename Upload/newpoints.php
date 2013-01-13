@@ -29,6 +29,7 @@
 
 define("IN_MYBB", 1);
 define('THIS_SCRIPT', 'newpoints.php');
+define("NP_DISABLE_GUESTS", 0);
 
 // Templates used by NewPoints
 $templatelist  = "newpoints_home,newpoints_donate,newpoints_statistics,newpoints_statistics_richest_user,newpoints_statistics_donation,newpoints_no_results,newpoints_option";
@@ -37,7 +38,8 @@ require_once "./global.php";
 
 $plugins->run_hooks("newpoints_begin");
 
-if (!$mybb->user['uid'])
+// Allow guests here? Some plugins may allow guest access and they may hook to newpoints_start
+if (!$mybb->user['uid'] && NP_DISABLE_GUESTS == 1)
 	error_no_permission();
 
 // load language
@@ -68,28 +70,6 @@ elseif ($mybb->input['action'] == 'donate')
 
 $menu = $plugins->run_hooks("newpoints_default_menu", $menu);
 
-/*$plugins_cache = $cache->read("newpoints_plugins");
-$active_plugins = $plugins_cache['active'];
-
-// let's build the rest of menu
-if (!empty($active_plugins))
-{
-	foreach($active_plugins as $plugin)
-	{
-		// Ignore potentially missing plugins.
-		if(!file_exists(MYBB_ROOT."inc/plugins/newpoints/".$plugin.".php"))
-			return true;
-	
-		require_once MYBB_ROOT."inc/plugins/newpoints/".$plugin.".php";
-	
-		$menu_func = "{$plugin}_menu";
-		if(!function_exists($menu_func))
-			continue;
-
-		$menu[] = $menu_func();
-	}
-}*/
-
 $bgcolor = alt_trow();
 $options = '';
 
@@ -102,6 +82,10 @@ foreach($menu as $option)
 }
 
 $plugins->run_hooks("newpoints_start");
+
+// Block guests here
+if (!$mybb->user['uid'])
+	error_no_permission();
 
 // no action = home
 if (!$mybb->input['action'])
@@ -169,6 +153,7 @@ if ($mybb->input['action'] == 'stats')
 	$bgcolor = alt_trow();
 	
 	// get latest donations
+
 	$query = $db->simple_select('newpoints_log', '*', 'action=\'donation\'', array('order_by' => 'date', 'order_dir' => 'DESC', 'limit' => intval($mybb->settings['newpoints_main_stats_lastdonations'])));
 	while($donation = $db->fetch_array($query)) {
 		$bgcolor = alt_trow();

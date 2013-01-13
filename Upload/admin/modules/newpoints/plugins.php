@@ -96,9 +96,10 @@ if($mybb->input['action'] == "activate" || $mybb->input['action'] == "deactivate
 		$message = $lang->success_plugin_activated;
 
 		// Plugin is compatible with this version?
-		if($plugins->is_compatible($codename) == false)
+		
+		if(!newpoints_iscompatible($codename))
 		{
-			flash_message($lang->sprintf($lang->plugin_incompatible, $mybb->version_code), 'error');
+			flash_message($lang->sprintf($lang->plugin_incompatible, NEWPOINTS_VERSION), 'error');
 			admin_redirect("index.php?module=newpoints-plugins");
 		}
 
@@ -320,6 +321,18 @@ function newpoints_get_plugins()
 
 function newpoints_iscompatible($plugininfo)
 {
+	if(!is_array($plugininfo))
+	{
+		require_once MYBB_ROOT."inc/plugins/newpoints/".$plugininfo.".php";
+		$infofunc = $plugininfo."_info";
+		if(!function_exists($infofunc))
+		{
+			continue;
+		}
+		
+		$plugininfo = $infofunc();
+	}
+	
 	// No compatibility set or compatibility = * - assume compatible
 	if(!$plugininfo['compatibility'] || $plugininfo['compatibility'] == "*")
 	{
