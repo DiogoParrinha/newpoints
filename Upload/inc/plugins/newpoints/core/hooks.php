@@ -92,6 +92,7 @@ if (NP_HOOKS == 1)
 elseif (NP_HOOKS == 2)
 {
 	$plugins->add_hook('global_start', 'newpoints_plugins_start');
+	$plugins->add_hook('xmlhttp', 'newpoints_load_xmlhttp'); // we want to make sure plugins can use the xmlhttp file
 	$plugins->add_hook('archive_start', 'newpoints_load_archive'); // we want to make sure plugins can use the archive
 	
 	// postbit
@@ -181,6 +182,19 @@ elseif (NP_HOOKS == 2)
 		
 		// as plugins can't hook to global_start, we must allow them to hook to global_start
 		$plugins->run_hooks("newpoints_global_start");
+	}
+
+	// Loads plugins from global_start and runs a new hook called 'newpoints_global_start' that can be used by NewPoints plugins (instead of global_start)
+	// global_start can't be used by NP plugins
+	function newpoints_load_xmlhttp()
+	{
+		global $plugins;
+		
+		newpoints_load_plugins();
+		//newpoints_load_settings();
+		
+		// as plugins can't hook to xmlhttp, we must allow them to hook to newpoints_xmlhttp
+		$plugins->run_hooks("newpoints_xmlhttp");
 	}
 	
 	// postbit
