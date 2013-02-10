@@ -129,4 +129,4 @@ The statistics page provides you information about the last donations and riches
 There is a statistics page which can be accessed by regular users: /newpoints.php?action=stats (this page can be disabled from the Main settings group)
 
 ### Support
-For support please visit [MyBB-Plugins.com][http://forums.mybb-plugins.com/] 
+For support please visit [MyBB-Plugins.com](http://forums.mybb-plugins.com/ "MyBB-Plugins.com")
