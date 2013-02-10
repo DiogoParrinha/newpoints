@@ -252,9 +252,9 @@ elseif (NP_HOOKS == 2)
 	// ****************** //
 
 	// new post
-	function newpoints_newpost()
+	function newpoints_newpost(&$data)
 	{
-		global $db, $mybb, $fid, $post, $thread;
+		global $db, $mybb, $post, $thread;
 		
 		if ($mybb->input['action'] != "do_newreply" || $post['savedraft'])
 			return;
@@ -269,7 +269,7 @@ elseif (NP_HOOKS == 2)
 			return;
 		
 		// check forum rules
-		$forumrules = newpoints_getrules('forum', $fid);
+		$forumrules = newpoints_getrules('forum', $data['fid']);
 		if (!$forumrules)
 			$forumrules['rate'] = 1; // no rule set so default income rate is 1
 		

@@ -1,3 +1,8 @@
+From version 1.9.7 to 1.9.8:
+* Plugins can now use the hook newpoints_xmlhttp.
+* Forum Rules did not affect quick reply posting.
+* Donation number_format warning on some PHP installations.
+
 From version 1.9.6 to 1.9.7:
 * Fixed a high risk vulnerability (SQL injection).
 * Fixed a bug in the newpoints_addpoints function which wouldn't add/remove points from a user if points had been added/removed in the same page already.
