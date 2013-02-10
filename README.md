@@ -43,87 +43,87 @@ NewPoints is the best points system for MyBB. Efficient, feature rich and easy t
 3. If you want to activate weekly backups, just enable the "Backup NewPoints" task from your Admin CP.
 
 ### Upgrade
-*Upgrading from 1.9.5/1.9.6 to 1.9.7*
+**Upgrading from 1.9.5/1.9.6 to 1.9.7**
 
 Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
-*Upgrading from 1.9.5 to 1.9.6*
+**Upgrading from 1.9.5 to 1.9.6**
 
 Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
-*Upgrading from 1.9.4 to 1.9.5*
+**Upgrading from 1.9.4 to 1.9.5**
 
 Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 Then, go to Admin CP -> NewPoints -> Upgrades -> Run the "Upgrade to 1.9.5" upgrade.
 
-*Upgrading from 1.9/1.9.1/1.9.2/1.9.3 to 1.9.4*
+**Upgrading from 1.9/1.9.1/1.9.2/1.9.3 to 1.9.4**
 
 Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
-*Upgrading from 1.8 to 1.9*
+**Upgrading from 1.8 to 1.9**
 
 Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 Then, go to Admin CP -> NewPoints -> Upgrades -> Run the "Upgrade to 1.9" upgrade.
 
-*Upgrading from 1.7 to 1.8*
+**Upgrading from 1.7 to 1.8**
 
 Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
-*Upgrading from 1.6 to 1.7*
+**Upgrading from 1.6 to 1.7**
 
 Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
-*Upgrading from 1.5 to 1.6*
+**Upgrading from 1.5 to 1.6**
 
 Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
-*Upgrading from 1.4 to 1.5*
+**Upgrading from 1.4 to 1.5**
 
 Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
-*Upgrading from 1.3 to 1.4*
+**Upgrading from 1.3 to 1.4**
 
 Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 If you had Bank 1.0 installed, you'll also have to deactivate it and activate it back.
 
-*Upgrading from 1.2 to 1.3*
+**Upgrading from 1.2 to 1.3**
 
 Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
-*Upgrading from 1.1 to 1.3*
+**Upgrading from 1.1 to 1.3**
 
 Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 Then, go to Admin CP -> NewPoints -> Upgrades -> Run the "Upgrade to 1.2" upgrade. Note that your old group and forum rules will be deleted.
 
 ### Instructions
-*Plugins*
+**Plugins**
 
 NewPoints's plugins must be uploaded to inc/plugins/newpoints and must be activated from NewPoints Plugins page.
 
-*Settings*
+**Settings**
 
 NewPoints's settings (including its plugins's settings) can be found in NewPoints (top tab) -> Settings (side bar tab).
 Default NewPoints settings can be found under "Main" and "Income" groups.
 
-*Log*
+**Log**
 
 From here, you can view all log entries. By default (without plugins), only donations are logged as there is nothing else to log.
 Log entries can be deleted one by one or pruned.
 Note: last donations are based off logs, so by deleting logs statistics will be affected.
 
-*Maintenance*
+**Maintenance**
 
 From the Maintenance page (NewPoints (top tab) -> Maintenance (side bar tab)) you can recount or reset everyone's points, edit someone's points or reconstruct templates to fix duplicates. (like double points showing up in the postbit or profile)
 
-*Forum Rules*
+**Forum Rules**
 
 You can set a custom income rate (by default, the income rate for every forum is 1) for each forum, as well as a minimum points to view the forum (view forum includes viewing threads within the forum, editing posts, view archive to view threads and the forum and sending thread), and set a minimum points to create a new post or thread. If the user doesn't have the required amount of points, an error page shows up informing the user how many points the user needs in order to execute that action.
 
-*User Group Rules*
+**User Group Rules**
 
 User group rules work the same way Froum Rules do, except that they have no minimum points to view or post rules, only income rate.
 
-*Statistics*
+**Statistics**
 
 The statistics page provides you information about the last donations and richest users.
 There is a statistics page which can be accessed by regular users: /newpoints.php?action=stats (this page can be disabled from the Main settings group)
