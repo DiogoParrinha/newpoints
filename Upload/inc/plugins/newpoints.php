@@ -638,6 +638,33 @@ function newpoints_remove_log($action)
 	}
 }
 
+/*
+ * Checks if a user has permissions or not.
+ * 
+ * @param array|string Allowed usergroups (if set to 'all', every user has access; if set to '' no one has)
+ *
+*/
+function newpoints_check_permissions($groups_comma)
+{
+	global $mybb;
+	
+	if ($groups_comma == 'all')
+		return true;
+	
+	if ($groups_comma == '')
+		return false;
+		
+	$groups = explode(",", $groups_comma);
+	
+	$ourgroups = explode(",", $mybb->user['additionalgroups']);
+	$ourgroups[] = $mybb->user['usergroup'];
+	
+	if(count(array_intersect($ourgroups, $groups)) == 0)
+		return false;
+	else
+		return true;
+}
+
 function newpoints_load_plugins()
 {
 	global $cache, $plugins, $mybb, $theme, $db, $templates, $newpoints_plugins;
