@@ -1,5 +1,0 @@
-Plugins I plan to do soon:
-* Buy points with PayPal - it's in the works but no release date has been set
-
-Port MyRPG to NewPoints - but add the ability to have multi (custom) items
-Port MyCompany to NewPoints
