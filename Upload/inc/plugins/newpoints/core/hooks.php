@@ -141,6 +141,7 @@ elseif (NP_HOOKS == 2)
 	$plugins->add_hook('sendthread_start', 'newpoints_blockview_send');
 	$plugins->add_hook('archive_forum_start', 'newpoints_blockview_archive');
 	$plugins->add_hook('archive_thread_start', 'newpoints_blockview_archive');
+	$plugins->add_hook('printthread_end', 'newpoints_blockview_print');
 	
 	// minimum points to post
 	$plugins->add_hook('newreply_start', 'newpoints_blockpost');
@@ -269,7 +270,7 @@ elseif (NP_HOOKS == 2)
 			return;
 		
 		// check forum rules
-		$forumrules = newpoints_getrules('forum', $data['fid']);
+		$forumrules = newpoints_getrules('forum', $data->post_insert_data['fid']);
 		if (!$forumrules)
 			$forumrules['rate'] = 1; // no rule set so default income rate is 1
 		
@@ -924,13 +925,10 @@ elseif (NP_HOOKS == 2)
 	{
 		global $mybb, $lang, $fid;
 		
-		if (!$mybb->user['uid'])
-			return;
-		
 		if ($mybb->settings['newpoints_main_enabled'] != 1)
 			return;
 		
-		if (THIS_SCRIPT == 'forumdisplay_start')
+		if (THIS_SCRIPT == 'forumdisplay.php')
 			$fid = intval($mybb->input['fid']);
 
 		$forumrules = newpoints_getrules('forum', $fid);
@@ -944,9 +942,6 @@ elseif (NP_HOOKS == 2)
 	function newpoints_blockview_edit()
 	{
 		global $mybb, $lang;
-		
-		if (!$mybb->user['uid'])
-			return;
 		
 		if ($mybb->settings['newpoints_main_enabled'] != 1)
 			return;
@@ -970,9 +965,6 @@ elseif (NP_HOOKS == 2)
 	{
 		global $mybb, $lang, $fid;
 		
-		if (!$mybb->user['uid'])
-			return;
-		
 		if ($mybb->settings['newpoints_main_enabled'] != 1)
 			return;
 
@@ -988,9 +980,6 @@ elseif (NP_HOOKS == 2)
 	{
 		global $mybb, $lang, $forum;
 		
-		if (!$mybb->user['uid'])
-			return;
-		
 		if ($mybb->settings['newpoints_main_enabled'] != 1)
 			return;
 		
@@ -1004,12 +993,24 @@ elseif (NP_HOOKS == 2)
 		}
 	}
 
-	function newpoints_blockpost()
+	function newpoints_blockview_print()
 	{
 		global $mybb, $lang, $fid;
 		
-		if (!$mybb->user['uid'])
+		if ($mybb->settings['newpoints_main_enabled'] != 1)
 			return;
+
+		$forumrules = newpoints_getrules('forum', $fid);
+		if ($forumrules['pointsview'] > $mybb->user['newpoints'])
+		{
+			$lang->load("newpoints");
+			error($lang->sprintf($lang->newpoints_not_enough_points, newpoints_format_points($forumrules['pointsview'])));
+		}
+	}
+	
+	function newpoints_blockpost()
+	{
+		global $mybb, $lang, $fid;
 		
 		if ($mybb->settings['newpoints_main_enabled'] != 1)
 			return;
