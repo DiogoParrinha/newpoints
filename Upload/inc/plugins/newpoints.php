@@ -147,11 +147,11 @@ function newpoints_jsspecialchars($str)
 	return strtr($string, array("\n" => '\n', "\r" => '\r', '\\' => '\\\\', '"' => '\x22', "'" => '\x27', '<' => '&lt;', '>' => '&gt;'));
 }
 
-/*
+/**
  * Deletes templates from the database
  * 
  * @param string a list of templates seperated by ',' e.g. 'test','test_again','testing'
- * @param bool false if something went wrong
+ * @return bool false if something went wrong
  *
 */
 function newpoints_remove_templates($templates)
@@ -164,13 +164,13 @@ function newpoints_remove_templates($templates)
 	return $db->delete_query('templates', "title IN (".$templates.")");
 }
 
-/*
+/**
  * Adds a new template
  * 
  * @param string the title of the template
  * @param string the contents of the template
  * @param integer the sid of the template
- * @param bool false if something went wrong
+ * @return bool false if something went wrong
  *
 */
 function newpoints_add_template($name, $contents, $sid = -1)
@@ -189,11 +189,11 @@ function newpoints_add_template($name, $contents, $sid = -1)
 	return $db->insert_query("templates", $templatearray);
 }
 
-/*
+/**
  * Deletes settings from the database
  * 
  * @param string a list of settings seperated by ',' e.g. 'test','test_again','testing'
- * @param bool false if something went wrong
+ * @return bool false if something went wrong
  *
 */
 function newpoints_remove_settings($settings)
@@ -209,7 +209,7 @@ function newpoints_remove_settings($settings)
 	return true;
 }
 
-/*
+/**
  * Adds a new setting
  * 
  * @param string the name (unique identifier) of the setting
@@ -218,6 +218,8 @@ function newpoints_remove_settings($settings)
  * @param string the description of the setting
  * @param string the type of the setting ('text', 'textarea', etc...)
  * @param string the value of the setting
+ * @param integer the display order of the setting
+ * @return bool false on failure, true on success
  *
 */
 function newpoints_add_setting($name, $plugin, $title, $description, $type, $value = '', $disporder = 0)
@@ -238,6 +240,8 @@ function newpoints_add_setting($name, $plugin, $title, $description, $type, $val
 	);
 	$db->insert_query("newpoints_settings", $setting);
 	
+	return true;
+	
 	/*$setting = array(
 		"name"			=> $db->escape_string($name),
 		"title"			=> $db->escape_string($title),
@@ -250,7 +254,7 @@ function newpoints_add_setting($name, $plugin, $title, $description, $type, $val
 	$db->insert_query("settings", $setting);*/
 }
 
-/*
+/**
  * Adds/Subtracts points to a user
  * 
  * @param integer the id of the user
@@ -303,7 +307,7 @@ function newpoints_update_addpoints()
 	}
 }
 
-/*
+/**
  * Get rules of a certain group or forum
  * 
  * @param string the type of rule: 'forum' or 'group'
@@ -347,7 +351,7 @@ function newpoints_getrules($type, $id)
 	return $rule;
 }
 
-/*
+/**
  * Get all rules
  * 
  * @param string the type of rule: 'forum' or 'group'
@@ -394,8 +398,10 @@ function newpoints_getallrules($type)
 	return $rules;
 }
 
-/*
+/**
  * Rebuild the rules cache.
+ *
+ * @param array An array which will contain the rules once the function is run.
 */
 function newpoints_rebuild_rules_cache(&$rules=array())
 {
@@ -422,7 +428,7 @@ function newpoints_rebuild_rules_cache(&$rules=array())
 	$cache->update('newpoints_rules', $rules);
 }
 
-/*
+/**
  * Formats points according to the settings
  * 
  * @param float the amount of points
@@ -511,7 +517,7 @@ function newpoints_send_pm($pm, $fromid = 0)
 	return true;
 }
 
-/*
+/**
  * Get the user data of a user name
  * 
  * @param string the user name
@@ -530,11 +536,10 @@ function newpoints_getuser_byname($username, $fields = '*')
 	return $db->fetch_array($query);
 }
 
-/*
+/**
  * Get the user group data of the gid
  * 
- * @param string the user name
- * @param string the fields to fetch
+ * @param integer the usergroup ID
  * @return array the user data
  *
 */
@@ -591,7 +596,7 @@ function newpoints_find_replace_templatesets($title, $find, $replace)
 	return true;
 }
 
-/*
+/**
  * Create a new log entry
  * 
  * @param string action taken
@@ -619,7 +624,7 @@ function newpoints_log($action, $data = '', $username='', $uid=0)
 	return true;
 }
 
-/*
+/**
  * Removes all log entries by action
  * 
  * @param array action taken
@@ -638,7 +643,7 @@ function newpoints_remove_log($action)
 	}
 }
 
-/*
+/**
  * Checks if a user has permissions or not.
  * 
  * @param array|string Allowed usergroups (if set to 'all', every user has access; if set to '' no one has)
@@ -711,8 +716,10 @@ function newpoints_load_settings()
 	}
 }
 
-/*
+/**
  * Rebuild the settings cache.
+ *
+ * @param array An array which will contain the settings once the function is run.
 */
 function newpoints_rebuild_settings_cache(&$settings=array())
 {
