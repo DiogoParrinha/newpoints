@@ -320,48 +320,48 @@ function newpoints_plugin_activate()
 <body>
 {$header}
 <table width="100%" border="0" align="center">
-<tr>
-<td valign="top" width="180">
-<table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
-<tr>
-<td class="thead"><strong>{$lang->newpoints_menu}</strong></td>
-</tr>
-{$options}
-</table>
-</td>
-<td valign="top">
-<table width="100%" border="0" align="center">
-<tr>
-<td valign="top" width="40%">
-<table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
-<tr>
-<td class="thead" colspan="2"><strong>{$lang->newpoints_richest_users}</strong></td>
-</tr>
-<tr>
-<td class="tcat" width="50%"><strong>{$lang->newpoints_user}</strong></td>
-<td class="tcat" width="50%" align="center"><strong>{$lang->newpoints_amount}</strong></td>
-</tr>
-{$richest_users}
-</table>
-</td>
-<td valign="top" width="60%">
-<table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
-<tr>
-<td class="thead" colspan="4"><strong>{$lang->newpoints_last_donations}</strong></td>
-</tr>
-<tr>
-<td class="tcat" width="30%"><strong>{$lang->newpoints_from}</strong></td>
-<td class="tcat" width="30%"><strong>{$lang->newpoints_to}</strong></td>
-<td class="tcat" width="20%" align="center"><strong>{$lang->newpoints_amount}</strong></td>
-<td class="tcat" width="20%" align="center"><strong>{$lang->newpoints_date}</strong></td>
-</tr>
-{$last_donations}
-</table>
-</td>
-</tr>
-</table>
-</td>
-</tr>
+    <tr>
+        <td valign="top" width="180">
+            <table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
+                <tr>
+                <td class="thead"><strong>{$lang->newpoints_menu}</strong></td>
+                </tr>
+                {$options}
+            </table>
+        </td>
+        <td valign="top">
+            <table width="100%" border="0" align="center">
+                <tr>
+                    <td valign="top" width="40%">
+                        <table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
+                            <tr>
+                                <td class="thead" colspan="2"><strong>{$lang->newpoints_richest_users}</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="tcat" width="50%"><strong>{$lang->newpoints_user}</strong></td>
+                                <td class="tcat" width="50%" align="center"><strong>{$lang->newpoints_amount}</strong></td>
+                            </tr>
+                            {$richest_users}
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td valign="top" width="60%">
+            <table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
+                <tr>
+                    <td class="thead" colspan="4"><strong>{$lang->newpoints_last_donations}</strong></td>
+                </tr>
+                <tr>
+                    <td class="tcat" width="30%"><strong>{$lang->newpoints_from}</strong></td>
+                    <td class="tcat" width="30%"><strong>{$lang->newpoints_to}</strong></td>
+                    <td class="tcat" width="20%" align="center"><strong>{$lang->newpoints_amount}</strong></td>
+                    <td class="tcat" width="20%" align="center"><strong>{$lang->newpoints_date}</strong></td>
+                </tr>
+                {$last_donations}
+            </table>
+        </td>
+    </tr>
 </table>
 {$footer}
 </body>

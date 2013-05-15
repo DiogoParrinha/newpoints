@@ -43,7 +43,7 @@ NewPoints is the best points system for MyBB. Efficient, feature rich and easy t
 3. If you want to activate weekly backups, just enable the "Backup NewPoints" task from your Admin CP.
 
 ### Upgrade
-**Upgrading from 1.9.5/1.9.6 to 1.9.7**
+**Upgrading from 1.9.5/1.9.6/1.9.7 to 1.9.8**
 
 Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
 
