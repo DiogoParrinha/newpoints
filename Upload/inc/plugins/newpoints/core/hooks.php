@@ -289,7 +289,8 @@ elseif (NP_HOOKS == 2)
 
 		// calculate points ber character bonus
 		// let's see if the number of characters in the post is greater than the minimum characters
-		if (($charcount = my_strlen($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
+		$post_wo_quotes = preg_replace("/\[quote.*?\](.*?)\[\/quote\]((\s)*(\[\/quote])*)*/is", '', $post['message']);
+		if (($charcount = my_strlen($post_wo_quotes)) >= $mybb->settings['newpoints_income_minchar']) 
 			$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
 		else
 			$bonus = 0;
@@ -345,8 +346,10 @@ elseif (NP_HOOKS == 2)
 			
 		// get old message
 		$post = get_post(intval($newpost->data['pid']));
-		$oldcharcount = my_strlen($post['message']);
-		$newcharcount = my_strlen($newpost->data['message']);
+		$newpost_wo_quotes = preg_replace("/\[quote.*?\](.*?)\[\/quote\]((\s)*(\[\/quote])*)*/is", '', $newpost->data['message']);
+		$oldpost_wo_quotes = preg_replace("/\[quote.*?\](.*?)\[\/quote\]((\s)*(\[\/quote])*)*/is", '', $post['message']);
+		$oldcharcount = my_strlen($oldpost_wo_quotes);
+		$newcharcount = my_strlen($newpost_wo_quotes);
 
 		// calculate points ber character bonus
 		// let's see if the number of characters in the post is greater than the minimum characters
@@ -434,7 +437,8 @@ elseif (NP_HOOKS == 2)
 			return;
 			
 		// get old message
-		$oldcharcount = my_strlen($post['message']);
+		$oldpost_wo_quotes = preg_replace("/\[quote.*?\](.*?)\[\/quote\]((\s)*(\[\/quote])*)*/is", '', $post['message']);
+		$oldcharcount = my_strlen($oldpost_wo_quotes);
 		
 		$message = strval($_POST['value']);
 		if(my_strtolower($charset) != "utf-8")
@@ -453,7 +457,9 @@ elseif (NP_HOOKS == 2)
 			}
 		}
 		
-		$newcharcount = my_strlen($message);
+		$newpost_wo_quotes = preg_replace("/\[quote.*?\](.*?)\[\/quote\]((\s)*(\[\/quote])*)*/is", '', $message);
+		
+		$newcharcount = my_strlen($newpost_wo_quotes);
 		
 		// calculate points per character bonus
 		// let's see if the number of characters in the post is greater than the minimum characters
@@ -528,7 +534,8 @@ elseif (NP_HOOKS == 2)
 
 		// calculate points ber character bonus
 		// let's see if the number of characters in the post is greater than the minimum characters
-		if (($charcount = my_strlen($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
+		$post_wo_quotes = preg_replace("/\[quote.*?\](.*?)\[\/quote\]((\s)*(\[\/quote])*)*/is", '', $post['message']);
+		if (($charcount = my_strlen($post_wo_quotes)) >= $mybb->settings['newpoints_income_minchar']) 
 			$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
 		else
 			$bonus = 0;
