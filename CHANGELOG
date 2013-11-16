@@ -1,3 +1,6 @@
+From version 1.9.8 to 1.9.9:
+* Fixed major bug in the newpoints_addpoints function which would cause malfunction if it was executed more than once per page.
+
 From version 1.9.7 to 1.9.8:
 * Plugins can now use the hook newpoints_xmlhttp.
 * Forum Rules did not affect quick reply posting.

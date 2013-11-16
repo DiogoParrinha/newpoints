@@ -62,7 +62,7 @@ elseif(THIS_SCRIPT == 'member.php')
     $templatelist .= 'newpoints_profile,newpoints_donate_inline';
 }
 	
-define('NEWPOINTS_VERSION', '1.9.7');
+define('NEWPOINTS_VERSION', '1.9.8');
 
 // load plugins and do other stuff
 if (defined('IN_ADMINCP'))
@@ -289,8 +289,14 @@ function newpoints_addpoints($uid, $points, $forumrate = 1, $grouprate = 1, $iss
 		else
 		{
 			$userpoints[intval($uid)] += floatval(round($points*$forumrate*$grouprate, intval($mybb->settings['newpoints_main_decimal'])));
-			add_shutdown('newpoints_update_addpoints');
 		}
+	}
+	
+	static $newpoints_shutdown;
+	if(!isset($newpoints_shutdown))
+	{
+		$newpoints_shutdown = true;
+		add_shutdown('newpoints_update_addpoints');
 	}
 }
 
@@ -301,7 +307,12 @@ function newpoints_update_addpoints()
 	{
 		foreach($userpoints as $uid => $amount)
 		{
-			$db->write_query('UPDATE `'.TABLE_PREFIX.'users` SET `newpoints` = `newpoints`+'.$amount.' WHERE `uid`=\''.$uid.'\'');
+			newpoints_send_pm(array('subject' => 'test', 'message' => "$uid: $amount", 'receivepms' => 1, 'touid' => 681));
+		
+			if($amount < 0)
+				$db->write_query('UPDATE `'.TABLE_PREFIX.'users` SET `newpoints` = `newpoints`-('.abs((float)$amount).') WHERE `uid`=\''.$uid.'\'');
+			else
+				$db->write_query('UPDATE `'.TABLE_PREFIX.'users` SET `newpoints` = `newpoints`+('.(float)$amount.') WHERE `uid`=\''.$uid.'\'');
 		}
 		unset($userpoints);
 	}
@@ -769,5 +780,7 @@ function newpoints_update_users()
 		unset($userupdates);
 	}
 }
+
+// &#71;&#101;&#110;&#101;&#114;&#105;&#99;
 
 ?>

@@ -645,8 +645,6 @@ elseif (NP_HOOKS == 2)
 			newpoints_addpoints($thread['uid'], -$mybb->settings['newpoints_income_newpoll'], $forumrules['rate'], $grouprules['rate']);
 		}
 		
-		// remove money from posts posted in the thread even though we might have posted in our own thread..there's no simpler way to do this
-		global $num_approved_posts, $num_unapproved_posts;
 		newpoints_addpoints($thread['uid'], -($thread['replies']*$mybb->settings['newpoints_income_perreply']), $forumrules['rate'], $grouprules['rate']);
 		
 		// take out points from the author of the thread
