@@ -307,8 +307,6 @@ function newpoints_update_addpoints()
 	{
 		foreach($userpoints as $uid => $amount)
 		{
-			newpoints_send_pm(array('subject' => 'test', 'message' => "$uid: $amount", 'receivepms' => 1, 'touid' => 681));
-		
 			if($amount < 0)
 				$db->write_query('UPDATE `'.TABLE_PREFIX.'users` SET `newpoints` = `newpoints`-('.abs((float)$amount).') WHERE `uid`=\''.$uid.'\'');
 			else
