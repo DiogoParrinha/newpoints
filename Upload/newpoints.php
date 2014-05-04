@@ -222,7 +222,7 @@ elseif ($mybb->input['action'] == 'do_donate')
 	if ($username == $mybb->user['username'])
 		error($lang->newpoints_cant_donate_self);
 	
-	$amount = round(floatval($mybb->input['amount']), $mybb->settings['newpoints_main_decimal']);
+	$amount = round(floatval($mybb->input['amount']), (int)$mybb->settings['newpoints_main_decimal']);
 	
 	// do we have enough points?
 	if ($amount <= 0 || $amount > $mybb->user['newpoints'])
