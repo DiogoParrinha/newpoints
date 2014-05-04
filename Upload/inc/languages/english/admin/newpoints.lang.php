@@ -71,6 +71,15 @@ $l['newpoints_older_than'] = 'Older than';
 $l['newpoints_older_than_desc'] = 'Prune log entries older than the number of days you enter.';
 $l['newpoints_log_pruned'] = 'Log entries successfully pruned.';
 $l['newpoints_log_pruneconfirm'] =' Are you sure you want to prune log entries?';
+$l['newpoints_invalid_username'] = 'Invalid username selected.';
+$l['newpoints_log_filter'] = 'Filters';
+$l['newpoints_filter_username'] = 'Username';
+$l['newpoints_filter_username_desc'] = 'Enter a username to filter by. This can be empty.';
+$l['newpoints_filter_actions'] = 'Actions';
+$l['newpoints_filter_actions_desc'] = 'Select the actions you want to filter.';
+$l['newpoints_select_actions'] = 'Select Actions';
+$l['newpoints_filter'] = 'Filters enabled:<br />{1}';
+$l['newpoints_username'] = 'Username';
 
 ///////////////// Maintenance
 $l['newpoints_maintenance'] = 'Maintenance';

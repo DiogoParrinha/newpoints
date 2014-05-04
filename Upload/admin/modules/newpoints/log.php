@@ -62,12 +62,71 @@ if (!$mybb->input['action']) // view logs
 		$start = 0;
 	}
 	
-	$query = $db->simple_select("newpoints_log", "COUNT(lid) as log_entries");
+	$sql = '';
+	
+	$filter_msg = '';
+	
+	// Process "username" search
+	if(isset($mybb->input['username']) && $mybb->input['username'] != '')
+	{
+		$query = $db->simple_select('users', 'uid', 'username=\''.$db->escape_string(trim($mybb->input['username'])).'\'');
+		$uid = $db->fetch_field($query, 'uid');
+		if($uid <= 0)
+		{
+			flash_message($lang->newpoints_invalid_username, 'error');
+			admin_redirect("index.php?module=newpoints-log");
+		}
+			
+		$sql .= 'uid='.(int)$uid;
+		
+		$url_filters .= '&amp;username='.urlencode(htmlspecialchars_uni($mybb->input['username']));
+		
+		$filter_msg .= $lang->newpoints_username.': '.htmlspecialchars_uni($mybb->input['username']);
+	}
+
+	// Process "fields" search
+	$selected = array();
+	if(isset($mybb->input['fields']) && is_array($mybb->input['fields']) && !empty($mybb->input['fields']))
+	{
+		$or = '';
+		$close = '';
+		
+		if($sql != '')
+		{
+			$sql .= ' AND (';
+			$close = ')';
+		}
+		
+		foreach($mybb->input['fields'] as $field)
+		{
+			$field = htmlspecialchars_uni($field);
+			$sql .= $or.'action=\''.$field.'\'';
+			if($or == '')
+				$or = ' OR ';
+				
+			$selected[$field] = $field;
+		
+			if(!isset($selected[$field]))
+				$selected[$field] = $field;
+				
+			if($filter_msg != '')
+				$filter_msg .= '<br />'.$field;
+				
+			$url_filters .= '&amp;fields[]='.$field;
+		}
+
+		$sql .= $close;
+	}
+	
+	if($filter_msg != '')
+		echo "<p class=\"notice\">".$lang->sprintf($lang->newpoints_filter, $filter_msg)."</p><br />";
+	
+	echo "<p class=\"notice\">{$lang->newpoints_log_notice}</p>";
+	
+	$query = $db->simple_select("newpoints_log", "COUNT(lid) as log_entries", $sql);
 	$total_rows = $db->fetch_field($query, "log_entries");
 	if ($total_rows > $per_page)
-		echo "<br />".draw_admin_pagination($mybb->input['page'], $per_page, $total_rows, "index.php?module=newpoints-log&amp;page={page}");
-		
-	echo "<p class=\"notice\">{$lang->newpoints_log_notice}</p>";
+		echo "<br />".draw_admin_pagination($mybb->input['page'], $per_page, $total_rows, "index.php?module=newpoints-log&amp;page={page}".$url_filters);
 	
 	// table
 	$table = new Table;
@@ -77,9 +136,10 @@ if (!$mybb->input['action']) // view logs
 	$table->construct_header($lang->newpoints_log_date, array('width' => '20%', 'class' => 'align_center'));
 	$table->construct_header($lang->newpoints_log_options, array('width' => '15%', 'class' => 'align_center'));
 
-	$query = $db->simple_select('newpoints_log', '*', '', array('order_by' => 'date', 'order_dir' => 'DESC', 'limit' => "{$start}, {$per_page}"));
-	while($log = $db->fetch_array($query)) {
-		
+	$fields = array();
+	$query = $db->simple_select('newpoints_log', '*', $sql, array('order_by' => 'date', 'order_dir' => 'DESC', 'limit' => "{$start}, {$per_page}"));
+	while($log = $db->fetch_array($query))
+	{
 		$table->construct_cell(htmlspecialchars_uni($log['action']));
 		$table->construct_cell(htmlspecialchars_uni($log['data']));
 		$link = build_profile_link(htmlspecialchars_uni($log['username']), intval($log['uid']));
@@ -97,6 +157,28 @@ if (!$mybb->input['action']) // view logs
 	}
 	
 	$table->output($lang->newpoints_log_entries);
+	
+	echo "<br />";
+	
+	// Get all actions
+	$fields = array();
+	$q = $db->query("SELECT action FROM `".TABLE_PREFIX."newpoints_log` GROUP BY action");
+	while($action = $db->fetch_field($q, 'action'))
+		$fields[htmlspecialchars_uni($action)] = htmlspecialchars_uni($action);
+	
+	$form = new Form("index.php?module=newpoints-log", "post", "newpoints");
+	
+	echo $form->generate_hidden_field("my_post_key", $mybb->post_code);
+		
+	$form_container = new FormContainer($lang->newpoints_log_filter);
+	$form_container->output_row($lang->newpoints_filter_username, $lang->newpoints_filter_username_desc, $form->generate_text_box('username', htmlspecialchars_uni($mybb->input['username']), array('id' => 'username')), 'username');
+	$form_container->output_row($lang->newpoints_filter_actions, $lang->newpoints_filter_actions_desc, $form->generate_select_box('fields[]', $fields, $selected, array('id' => 'fields', 'multiple' => true)), 'fields');
+	$form_container->end();
+
+	$buttons = array();
+	$buttons[] = $form->generate_submit_button($lang->newpoints_submit_button);
+	$form->output_submit_wrapper($buttons);
+	$form->end();
 	
 	echo "<br />";
 	

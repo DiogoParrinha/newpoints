@@ -1,6 +1,8 @@
 ## NewPoints
 NewPoints is the best points system for MyBB. Efficient, feature rich and easy to use.
 
+NewPoints is in its most stable stage since it has reached v2. Enjoy it!
+
 ### Features
 
 * Main settings
@@ -43,6 +45,10 @@ NewPoints is the best points system for MyBB. Efficient, feature rich and easy t
 3. If you want to activate weekly backups, just enable the "Backup NewPoints" task from your Admin CP.
 
 ### Upgrade
+**Upgrading from 1.9.5/1.9.6/1.9.7/1.9.8 to 2.0**
+
+Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
+
 **Upgrading from 1.9.5/1.9.6/1.9.7/1.9.8 to 1.9.9**
 
 Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
