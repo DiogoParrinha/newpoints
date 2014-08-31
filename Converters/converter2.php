@@ -4,7 +4,7 @@
  *
  *   Converter to convert MyPS to NewPoints (/converter2.php)
  *	 Author: Pirata Nervo
- *   Copyright: © 2009-2011 Pirata Nervo
+ *   Copyright: © 2014 Pirata Nervo
  *   
  *   Website: http://www.mybb-plugins.com
  *

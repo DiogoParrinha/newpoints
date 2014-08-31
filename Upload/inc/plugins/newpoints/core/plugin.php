@@ -3,7 +3,7 @@
  *
  *   NewPoints plugin (/inc/plugins/newpoints/core/plugin.php)
  *	 Author: Pirata Nervo
- *   Copyright: © 2009-2011 Pirata Nervo
+ *   Copyright: © 2014 Pirata Nervo
  *   
  *   Website: http://www.mybb-plugins.com
  *
@@ -37,9 +37,9 @@ function newpoints_plugin_info()
 		"website"		=> "http://www.consoleaddicted.com",
 		"author"		=> "Pirata Nervo",
 		"authorsite"	=> "http://www.mybb-plugins.com",
-		"version"		=> "1.9.9",
+		"version"		=> "2.0",
 		"guid" 			=> "152e7f9f32fadb777d58fda000eb7a9e",
-		"compatibility" => "16*"
+		"compatibility" => "18*"
 	);
 }
 

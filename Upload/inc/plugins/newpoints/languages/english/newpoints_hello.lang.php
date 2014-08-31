@@ -3,7 +3,7 @@
  *
  *   NewPoints Hello plugin (/inc/plugins/newpoints/languages/english/newpoints_hello.php)
  *	 Author: Pirata Nervo
- *   Copyright: © 2009-2011 Pirata Nervo
+ *   Copyright: © 2014 Pirata Nervo
  *   
  *   Website: http://www.mybb-plugins.com
  *
