@@ -448,7 +448,7 @@ function newpoints_format_points($points)
 {
 	global $mybb;
 	
-	return $mybb->settings['newpoints_main_curprefix'].number_format((float)$points, intval($mybb->settings['newpoints_main_decimal'])).$mybb->settings['newpoints_main_cursuffix'];
+	return $mybb->settings['newpoints_main_curprefix'].my_number_format(round((float)$points, intval($mybb->settings['newpoints_main_decimal']))).$mybb->settings['newpoints_main_cursuffix'];
 }
 
 /**

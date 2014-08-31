@@ -1,3 +1,9 @@
+From version 1.9.9 to 2.9:
+* Compatible with MyBB 1.8.
+* Fixed bug in the points format, related to thousands and decimals separators.
+* Characters within quote tags are not counted anymore.
+* Guest posts / Deleted users' posts showed points in the user details section when in fact they don't have any possible points.
+
 From version 1.9.8 to 1.9.9:
 * Fixed major bug in the newpoints_addpoints function which would cause malfunction if it was executed more than once per page.
 

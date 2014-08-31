@@ -203,6 +203,11 @@ elseif (NP_HOOKS == 2)
 	{
 		global $mybb, $db, $currency, $points, $templates, $donate, $lang, $uid;
 		
+		if($mybb->user['uid'] == 0)
+		{
+			$post['newpoints_postbit'] = '';
+		}
+		
 		if ($mybb->settings['newpoints_main_enabled'] != 1)
 		{
 			$post['newpoints_postbit'] = '';
