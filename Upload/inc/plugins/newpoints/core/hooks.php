@@ -203,7 +203,7 @@ elseif (NP_HOOKS == 2)
 	{
 		global $mybb, $db, $currency, $points, $templates, $donate, $lang, $uid;
 		
-		if($mybb->user['uid'] == 0)
+		if($post['uid'] == 0)
 		{
 			$post['newpoints_postbit'] = '';
 		}
