@@ -1,4 +1,4 @@
-From version 1.9.9 to 2.9:
+From version 1.9.9 to 2.0:
 * Compatible with MyBB 1.8.
 * Fixed bug in the points format, related to thousands and decimals separators.
 * Characters within quote tags are not counted anymore.

@@ -62,7 +62,7 @@ elseif(THIS_SCRIPT == 'member.php')
     $templatelist .= 'newpoints_profile,newpoints_donate_inline';
 }
 	
-define('NEWPOINTS_VERSION', '1.9.8');
+define('NEWPOINTS_VERSION', '2.0');
 
 // load plugins and do other stuff
 if (defined('IN_ADMINCP'))
