@@ -63,6 +63,7 @@ elseif(THIS_SCRIPT == 'member.php')
 }
 	
 define('NEWPOINTS_VERSION', '2.0');
+define('MAX_DONATIONS_CONTROL', '5'); // Maximum donations someone can send each 15 minutes
 
 // load plugins and do other stuff
 if (defined('IN_ADMINCP'))
@@ -127,6 +128,54 @@ if (defined('IN_ADMINCP'))
 		require_once MYBB_ROOT."inc/plugins/newpoints/core/plugin.php";
 		newpoints_plugin_deactivate();
 	}
+}
+
+function newpoints_count_characters($message)
+{
+	// Attempt to remove any quotes
+	$message = preg_replace(array(
+		'#\[quote=([\"\']|&quot;|)(.*?)(?:\\1)(.*?)(?:[\"\']|&quot;)?\](.*?)\[/quote\](\r\n?|\n?)#esi',
+		'#\[quote\](.*?)\[\/quote\](\r\n?|\n?)#si',
+		'#\[quote\]#si',
+		'#\[\/quote\]#si'
+	), '', $message);
+
+	// Attempt to remove any MyCode
+	global $parser;
+	if(!is_object($parser))
+	{
+		require_once MYBB_ROOT.'inc/class_parser.php';
+		$parser = new postParser;
+	}
+
+	$message = $parser->parse_message($message, array(
+		'allow_html'		=>	0,
+		'allow_mycode'		=>	1,
+		'allow_smilies'		=>	0,
+		'allow_imgcode'		=>	1,
+		'filter_badwords'	=>	1,
+		'nl2br'				=>	0
+	));
+
+	// before stripping tags, try converting some into spaces
+	$message = preg_replace(array(
+		'~\<(?:img|hr).*?/\>~si',
+		'~\<li\>(.*?)\</li\>~si'
+	), array(' ', "\n* $1"), $message);
+
+	$message = unhtmlentities(strip_tags($message));
+
+	// Remove all spaces?
+	$message = trim_blank_chrs($message);
+	$message = preg_replace('/\s+/', '', $message);
+
+	// convert \xA0 to spaces (reverse &nbsp;)
+	$message = trim(preg_replace(array('~ {2,}~', "~\n{2,}~"), array(' ', "\n"), strtr($message, array("\xA0" => ' ', "\r" => '', "\t" => ' '))));
+
+	// newline fix for browsers which don't support them
+	$message = preg_replace("~ ?\n ?~", " \n", $message);
+
+	return (int)my_strlen($message);
 }
 
 /**************************************************************************************/

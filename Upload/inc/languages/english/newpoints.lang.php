@@ -61,5 +61,6 @@ $l['newpoints_source'] = 'Source';
 $l['newpoints_home_desc'] = 'NewPoints is a complex points system for MyBB software.<br />As you can see, there are various options on the menu on the left that you can use.<br /><br /><strong>How do you earn points?</strong><br /><table align="center"><tr><td align="left"><strong>Source</strong></td><td align="right"><strong>Amount Paid</strong></td></tr>{1}</table><br /><br />Contact your administrator if you have any questions.<br />This software was written by <a href="http://forums.mybb-plugins.com/user-1.html">Pirata Nervo</a> for <a href="http://mybboard.net">MyBB</a>.';
 $l['newpoints_action'] = 'Action';
 $l['newpoints_chars'] = 'Chars';
+$l['newpoints_max_donations_control'] = 'You have reached the maximum of {1} over the last 15 minutes. Please wait before making a new one.';
 
 ?>

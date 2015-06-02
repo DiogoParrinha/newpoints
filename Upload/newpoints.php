@@ -217,6 +217,13 @@ elseif ($mybb->input['action'] == 'do_donate')
 	
 	$plugins->run_hooks("newpoints_do_donate_start");
 	
+	$q = $db->simple_select('newpoints_log', 'COUNT(*) as donations', 'action=\'donation\' AND date>'.(TIME_NOW-15*60*60).' AND uid='.(int)$mybb->user['uid']);
+	$totaldonations = (int)$db->fetch_field($q, 'donations');
+	if($totaldonations >= MAX_DONATIONS_CONTROL)
+	{
+		error($lang->sprintf($lang->newpoints_max_donations_control, $totaldonations));
+	}
+	
 	// make sure we're not trying to send a donation to ourselves
 	$username = trim($mybb->input['username']);
 	if ($username == $mybb->user['username'])

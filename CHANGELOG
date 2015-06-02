@@ -1,3 +1,11 @@
+From version 2.0 to 2.1:
+* Improved character count system (thanks to Omar G. - http://forums.mybb-plugins.com/Thread-OUGC-Post-Character-Count-Enhancement)
+* Deleted users'/Guests' posts would display 0 points and the donate link.
+* Added donation spam control (default is 5 per 15 minutes)
+* Points are now removed when soft deleting (but not removed twice if the post/thread is permanently (Restoring DOES NOT give points back)
+* Fixed bug in points deducted when deleting threads with replies (would deduct more points)
+* Editing soft deleted posts does not give/deduct points based on character count.
+
 From version 1.9.9 to 2.0:
 * Compatible with MyBB 1.8.
 * Fixed bug in the points format, related to thousands and decimals separators.
