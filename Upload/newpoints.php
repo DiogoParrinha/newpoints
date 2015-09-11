@@ -45,6 +45,8 @@ if (!$mybb->user['uid'] && NP_DISABLE_GUESTS == 1)
 // load language
 $lang->load("newpoints");
 
+$mybb->input['action'] = $mybb->get_input('action');
+
 // build the menu
 
 $menu = array();

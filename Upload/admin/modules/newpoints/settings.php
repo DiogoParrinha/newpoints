@@ -158,6 +158,10 @@ if($mybb->input['action'] == "change")
 		{
 			$setting_code = $form->generate_text_box($element_name, $setting['value'], array('id' => $element_id));
 		}
+		else if($type[0] == "numeric")
+		{
+			$setting_code = $form->generate_numeric_field($element_name, $setting['value'], array('id' => $element_id));
+		}
 		else if($type[0] == "textarea")
 		{
 			$setting_code = $form->generate_text_area($element_name, $setting['value'], array('id' => $element_id));

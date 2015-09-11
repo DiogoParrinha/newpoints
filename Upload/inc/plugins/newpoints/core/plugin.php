@@ -289,18 +289,18 @@ function newpoints_plugin_activate()
 </tr>
 <tr>
 <td class="trow1" width="50%"><strong>{$lang->newpoints_user}:</strong><br /><span class="smalltext">{$lang->newpoints_user_desc}</span></td>
-<td class="trow1" width="50%"><input type="text" name="username" value="{$user[\'username\']}" class="textbox" /></td>
+<td class="trow1" width="50%"><input type="text" name="username" value="{$user[\'username\']}" class="textbox" id="username" /></td>
 </tr>
 <tr>
 <td class="trow2" width="50%"><strong>{$lang->newpoints_amount}:</strong><br /><span class="smalltext">{$lang->newpoints_amount_desc}</span></td>
-<td class="trow2" width="50%"><input type="text" name="amount" value="" class="textbox" /></td>
+<td class="trow2" width="50%"><input type="text" name="amount" value="" class="textbox" size="20" /></td>
 </tr>
 <tr>
 <td class="trow1" width="50%"><strong>{$lang->newpoints_reason}:</strong><br /><span class="smalltext">{$lang->newpoints_reason_desc}</span></td>
-<td class="trow1" width="50%"><input type="text" name="reason" value="" class="textbox" /></td>
+<td class="trow1" width="50%"><input type="text" name="reason" value="" class="textbox" size="20" /></td>
 </tr>
 <tr>
-<td class="tfoot" width="100%" colspan="2" align="center"><input type="submit" name="submit" value="{$lang->newpoints_submit}" /></td>
+<td class="tfoot" width="100%" colspan="2" align="center"><input type="submit" name="submit" value="{$lang->newpoints_submit}" class="button" /></td>
 </tr>
 </table>
 </form>
@@ -308,6 +308,58 @@ function newpoints_plugin_activate()
 </tr>
 </table>
 {$footer}
+<link rel="stylesheet" href="{$mybb->asset_url}/jscripts/select2/select2.css">
+<script type="text/javascript" src="{$mybb->asset_url}/jscripts/select2/select2.min.js?ver=185"></script>
+<script type="text/javascript">
+<!--
+if(use_xmlhttprequest == "1")
+{
+	MyBB.select2();
+	$("#username").select2({
+		placeholder: "{$lang->newpoints_search_user}",
+		minimumInputLength: 3,
+		maximumSelectionSize: 3,
+		multiple: false,
+		width: 150,
+		ajax: { // instead of writing the function to execute the request we use Select2\'s convenient helper
+			url: "xmlhttp.php?action=get_users",
+			dataType: \'json\',
+			data: function (term, page) {
+				return {
+					query: term, // search term
+				};
+			},
+			results: function (data, page) { // parse the results into the format expected by Select2.
+				// since we are using custom formatting functions we do not need to alter remote JSON data
+				return {results: data};
+			}
+		},
+		initSelection: function(element, callback) {
+			var value = $(element).val();
+			if (value !== "") {
+				callback({
+					id: value,
+					text: value
+				});
+			}
+		},
+       // Allow the user entered text to be selected as well
+       createSearchChoice:function(term, data) {
+			if ( $(data).filter( function() {
+				return this.text.localeCompare(term)===0;
+			}).length===0) {
+				return {id:term, text:term};
+			}
+		},
+	});
+
+  	$(\'[for=username]\').click(function(){
+		$("#username").select2(\'open\');
+		return false;
+	});
+}
+// -->
+</script>
 </body>
 </html>');
 

@@ -230,11 +230,48 @@ function newpoints_add_template($name, $contents, $sid = -1)
 		return false;
 	
 	$templatearray = array(
-		"title" => $db->escape_string($name),
-		"template" => $db->escape_string($contents),
-		"sid" => intval($sid)
+		"title"		=> $db->escape_string($name),
+		"template"	=> $db->escape_string($contents),
+		"sid"		=> intval($sid)
 	);
 
+	// Find duplicates and existing templates with the same name
+	$query = $db->simple_select('templates', 'tid,title,template', "sid='{$sid}' AND title='{$templatearray['title']}'");
+	$templates = array();
+	$duplicates = array();
+	while($templ = $db->fetch_array($query))
+	{
+		// Already found one?
+		if(isset($templates[$templ['title']]))
+		{
+			$duplicates[$templ['tid']] = $templ['tid'];
+			$templates[$templ['title']]['template'] = false; // We surely want to update it as we don't know which one we're supposed to compare with
+		}
+		else
+		{
+			$templates[$templ['title']] = $templ;
+		}
+	}
+	
+	// Remove duplicates
+	if(!empty($duplicates))
+	{
+		$db->delete_query('templates', 'tid IN ('.implode(",", $duplicates).')');
+	}
+	
+	// Update if necessary, insert otherwise
+	if(isset($templates[$name]))
+	{
+		// If the contents differ...update them
+		if($templates[$name]['template'] !== $contents)
+		{
+			return $db->update_query('templates', $templatearray, "tid={$templates[$name]['tid']}");
+		}
+		
+		// Otherwise keep it untouched
+		return false;
+	}
+	
 	return $db->insert_query("templates", $templatearray);
 }
 
@@ -287,20 +324,20 @@ function newpoints_add_setting($name, $plugin, $title, $description, $type, $val
 		"value"			=> $db->escape_string($value),
 		"disporder"		=> intval($disporder)
 	);
-	$db->insert_query("newpoints_settings", $setting);
+	
+	// Update if setting already exists, insert otherwise.
+	$query = $db->simple_select('newpoints_settings', 'sid', "name='{$setting['name']}' AND plugin='{$setting['plugin']}'");
+	if($sid = $db->fetch_field($query, 'sid'))
+	{
+		unset($setting['value']);
+		$db->update_query("newpoints_settings", $setting, "sid='{$sid}'");
+	}
+	else
+	{
+		$db->insert_query("newpoints_settings", $setting);
+	}
 	
 	return true;
-	
-	/*$setting = array(
-		"name"			=> $db->escape_string($name),
-		"title"			=> $db->escape_string($title),
-		"description"	=> $db->escape_string($description),
-		"optionscode"	=> $db->escape_string($type),
-		"value"			=> $db->escape_string($value),
-		"disporder"		=> intval($disporder),
-		"gid"			=> ''
-	);
-	$db->insert_query("settings", $setting);*/
 }
 
 /**

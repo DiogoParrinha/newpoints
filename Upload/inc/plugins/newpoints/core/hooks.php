@@ -111,6 +111,8 @@ elseif (NP_HOOKS == 2)
 	$plugins->add_hook('class_moderation_delete_post_start', 'newpoints_deletepost');
 	// soft delete posts
 	$plugins->add_hook('class_moderation_soft_delete_posts', 'newpoints_softdeleteposts');
+	// restore soft deleted posts
+	$plugins->add_hook('class_moderation_restore_posts', 'newpoints_restoreposts');
 	
 	// per new thread
 	$plugins->add_hook('datahandler_post_insert_thread', 'newpoints_newthread');
@@ -296,7 +298,7 @@ elseif (NP_HOOKS == 2)
 		if ($grouprules['rate'] == 0)
 			return;
 
-		// calculate points ber character bonus
+		// calculate points per character bonus
 		// let's see if the number of characters in the post is greater than the minimum characters
 		if (($charcount = newpoints_count_characters($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
 			$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
@@ -357,7 +359,7 @@ elseif (NP_HOOKS == 2)
 		$oldcharcount = newpoints_count_characters($post['message']);
 		$newcharcount = newpoints_count_characters($newpost->data['message']);
 
-		// calculate points ber character bonus
+		// calculate points per character bonus
 		// let's see if the number of characters in the post is greater than the minimum characters
 		if ($newcharcount >= $mybb->settings['newpoints_income_minchar']) 
 		{
@@ -538,14 +540,14 @@ elseif (NP_HOOKS == 2)
 		if ($grouprules['rate'] == 0)
 			return;
 
-		// calculate points ber character bonus
+		// calculate points per character bonus
 		// let's see if the number of characters in the post is greater than the minimum characters
 		if (($charcount = newpoints_count_characters($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
 			$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
 		else
 			$bonus = 0;
 		
-		if ($thread['uid'] != $mybb->user['uid'])
+		if ($thread['uid'] != $post['uid'])
 		{
 			// we are not the thread started so remove points from him/her
 			if ($mybb->settings['newpoints_income_perreply'] != 0)
@@ -556,7 +558,7 @@ elseif (NP_HOOKS == 2)
 		newpoints_addpoints($post['uid'], -$mybb->settings['newpoints_income_newpost']-$bonus, $forumrules['rate'], $grouprules['rate']);
 	}
 
-	// delete post
+	// delete posts
 	function newpoints_softdeleteposts($pids)
 	{
 		global $db, $mybb, $fid;
@@ -595,14 +597,15 @@ elseif (NP_HOOKS == 2)
 				if ($grouprules['rate'] == 0)
 					return;
 
-				// calculate points ber character bonus
+				// calculate points per character bonus
 				// let's see if the number of characters in the post is greater than the minimum characters
 				if (($charcount = newpoints_count_characters($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
 					$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
 				else
 					$bonus = 0;
 				
-				if ($thread['uid'] != $mybb->user['uid'])
+				// the post author != thread author?
+				if ($thread['uid'] != $post['uid'])
 				{
 					// we are not the thread started so remove points from him/her
 					if ($mybb->settings['newpoints_income_perreply'] != 0)
@@ -611,6 +614,66 @@ elseif (NP_HOOKS == 2)
 				
 				// remove points from the poster
 				newpoints_addpoints($post['uid'], -$mybb->settings['newpoints_income_newpost']-$bonus, $forumrules['rate'], $grouprules['rate']);
+			}
+		}
+	}
+	
+	// restore posts
+	function newpoints_restoreposts($pids)
+	{
+		global $db, $mybb, $fid;
+		
+		if (!$mybb->user['uid'])
+			return;
+		
+		if ($mybb->settings['newpoints_main_enabled'] != 1)
+			return;
+			
+		if ($mybb->settings['newpoints_income_newpost'] == 0)
+			return;
+		
+		if(!empty($pids))
+		{
+			foreach($pids as $pid)
+			{
+				$post = get_post((int)$pid);
+				$thread = get_thread($post['tid']);
+				
+				// check forum rules
+				$forumrules = newpoints_getrules('forum', $fid);
+				if (!$forumrules)
+					$forumrules['rate'] = 1; // no rule set so default income rate is 1
+				
+				// if the forum rate is 0, nothing is going to be removed so let's just leave the function
+				if ($forumrules['rate'] == 0)
+					return;
+				
+				// check group rules - primary group check
+				$grouprules = newpoints_getrules('group', $mybb->user['usergroup']);
+				if (!$grouprules)
+					$grouprules['rate'] = 1; // no rule set so default income rate is 1
+				
+				// if the group rate is 0, nothing is going to be removed so let's just leave the function
+				if ($grouprules['rate'] == 0)
+					return;
+
+				// calculate points per character bonus
+				// let's see if the number of characters in the post is greater than the minimum characters
+				if (($charcount = newpoints_count_characters($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
+					$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
+				else
+					$bonus = 0;
+				
+				// the post author != thread author?
+				if ($thread['uid'] != $post['uid'])
+				{
+					// we are not the thread started so give points to them
+					if ($mybb->settings['newpoints_income_perreply'] != 0)
+						newpoints_addpoints($thread['uid'], $mybb->settings['newpoints_income_perreply'], $forumrules['rate'], $grouprules['rate']);
+				}
+				
+				// give points to the author of the post
+				newpoints_addpoints($post['uid'], $mybb->settings['newpoints_income_newpost']+$bonus, $forumrules['rate'], $grouprules['rate']);
 			}
 		}
 	}
@@ -650,7 +713,7 @@ elseif (NP_HOOKS == 2)
 		if ($grouprules['rate'] == 0)
 			return;
 
-		// calculate points ber character bonus
+		// calculate points per character bonus
 		// let's see if the number of characters in the thread is greater than the minimum characters
 		if (($charcount = newpoints_count_characters($mybb->input['message'])) >= $mybb->settings['newpoints_income_minchar']) 
 			$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
@@ -701,7 +764,7 @@ elseif (NP_HOOKS == 2)
 		// get post of the thread
 		$post = get_post($thread['firstpost']);
 
-		// calculate points ber character bonus
+		// calculate points per character bonus
 		// let's see if the number of characters in the thread is greater than the minimum characters
 		if (($charcount = newpoints_count_characters($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
 			$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
