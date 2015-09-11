@@ -443,7 +443,7 @@ elseif (NP_HOOKS == 2)
 			return;
 			
 		// get old message
-		$oldcharcount = newpoints_count_characters($post['message'];
+		$oldcharcount = newpoints_count_characters($post['message']);
 		
 		$message = strval($_POST['value']);
 		if(my_strtolower($charset) != "utf-8")
