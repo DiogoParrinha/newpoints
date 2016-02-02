@@ -62,7 +62,7 @@ elseif(THIS_SCRIPT == 'member.php')
     $templatelist .= 'newpoints_profile,newpoints_donate_inline';
 }
 	
-define('NEWPOINTS_VERSION', '2.0');
+define('NEWPOINTS_VERSION', '2.1');
 define('MAX_DONATIONS_CONTROL', '5'); // Maximum donations someone can send each 15 minutes
 
 // load plugins and do other stuff
