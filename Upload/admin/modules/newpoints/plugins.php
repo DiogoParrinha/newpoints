@@ -327,7 +327,7 @@ function newpoints_iscompatible($plugininfo)
 		$infofunc = $plugininfo."_info";
 		if(!function_exists($infofunc))
 		{
-			continue;
+			return;
 		}
 		
 		$plugininfo = $infofunc();

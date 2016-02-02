@@ -170,7 +170,7 @@ function newpoints_count_characters($message)
 	$message = preg_replace('/\s+/', '', $message);
 
 	// convert \xA0 to spaces (reverse &nbsp;)
-	$message = trim(preg_replace(array('~ {2,}~', "~\n{2,}~"), array(' ', "\n"), strtr($message, array("\xA0" => ' ', "\r" => '', "\t" => ' '))));
+	$message = trim(preg_replace(array('~ {2,}~', "~\n{2,}~"), array(' ', "\n"), strtr($message, array("\xA0" => utf8_encode("\xA0"), "\r" => '', "\t" => ' '))));
 
 	// newline fix for browsers which don't support them
 	$message = preg_replace("~ ?\n ?~", " \n", $message);
