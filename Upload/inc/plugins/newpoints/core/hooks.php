@@ -97,6 +97,9 @@ elseif (NP_HOOKS == 2)
 	
 	// postbit
 	$plugins->add_hook('postbit', 'newpoints_postbit', 50); // set priority to 50
+	$plugins->add_hook('postbit_prev', 'newpoints_postbit', 50); // set priority to 50
+	$plugins->add_hook('postbit_pm', 'newpoints_postbit', 50); // set priority to 50
+	$plugins->add_hook('postbit_announcement', 'newpoints_postbit', 50); // set priority to 50 
 	
 	// member profile
 	$plugins->add_hook("member_profile_end", "newpoints_profile");
