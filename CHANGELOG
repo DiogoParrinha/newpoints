@@ -11,6 +11,7 @@ From version 2.0 to 2.1:
 * Fixed one bug related to the deleting posts action: points for replies wouldn't be counted properly some times
 * Added 'numeric' field type to settings.
 * Fixed a few other bugs.
+* Settings can now be translated on the front-end (see language file)
 
 From version 1.9.9 to 2.0:
 * Compatible with MyBB 1.8.
