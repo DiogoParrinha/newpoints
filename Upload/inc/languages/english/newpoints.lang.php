@@ -63,4 +63,33 @@ $l['newpoints_action'] = 'Action';
 $l['newpoints_chars'] = 'Chars';
 $l['newpoints_max_donations_control'] = 'You have reached the maximum of {1} over the last 15 minutes. Please wait before making a new one.';
 
+// Settings translation
+$l['newpoints_setting_newpoints_income_newpost_title'] = 'New Post';
+$l['newpoints_setting_newpoints_income_newpost_desc'] = 'Amount of points received on new post.';
+$l['newpoints_setting_newpoints_income_newthread_title'] = 'New Thread';
+$l['newpoints_setting_newpoints_income_newthread_desc'] = 'Amount of points received on new thread.';
+$l['newpoints_setting_newpoints_income_newpoll_title'] = 'New Poll';
+$l['newpoints_setting_newpoints_income_newpoll_desc'] = 'Amount of points received on new poll.';
+$l['newpoints_setting_newpoints_income_perchar_title'] = 'Per Character';
+$l['newpoints_setting_newpoints_income_perchar_desc'] = 'Amount of points received per character (in new thread and new post).';
+$l['newpoints_setting_newpoints_income_minchar_title'] = 'Minimum Characters';
+$l['newpoints_setting_newpoints_income_minchar_desc'] = 'Minimum characters required in order to receive the amount of points per character.';
+$l['newpoints_setting_newpoints_income_newreg_title'] = 'New Registration';
+$l['newpoints_setting_newpoints_income_newreg_desc'] = 'Amount of points received by the user when registering.';
+$l['newpoints_setting_newpoints_income_pervote_title'] = 'Per Poll Vote';
+$l['newpoints_setting_newpoints_income_pervote_desc'] = 'Amount of points received by the user who votes.';
+$l['newpoints_setting_newpoints_income_perreply_title'] = 'Per Reply';
+$l['newpoints_setting_newpoints_income_perreply_desc'] = 'Amount of points received by the author of the thread, when someone replies to it.';
+$l['newpoints_setting_newpoints_income_pmsent_title'] = 'Per PM Sent';
+$l['newpoints_setting_newpoints_income_pmsent_desc'] = 'Amount of points received everytime a user sends a private message.';
+$l['newpoints_setting_newpoints_income_perrate_title'] = 'Per Rate';
+$l['newpoints_setting_newpoints_income_perrate_desc'] = 'Amount of points received everytime a user rates a thread.';
+$l['newpoints_setting_newpoints_income_pageview_title'] = 'Per Page View';
+$l['newpoints_setting_newpoints_income_pageview_desc'] = 'Amount of points received everytime a user views a page.';
+$l['newpoints_setting_newpoints_income_visit_title'] = 'Per Visit';
+$l['newpoints_setting_newpoints_income_visit_desc'] = 'Amount of points received everytime a user visits the forum. ("visits" = new MyBB session (expires after 15 minutes))';
+$l['newpoints_setting_newpoints_income_referral_title'] = 'Per Referral';
+$l['newpoints_setting_newpoints_income_referral_desc'] = 'Amount of points received everytime a user is referred. (the referred user is who receives the points)';
+
+
 ?>

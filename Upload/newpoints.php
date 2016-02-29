@@ -105,7 +105,10 @@ if (!$mybb->input['action'])
 		else
 			$value = newpoints_format_points($setting['value']);
 
-		$income_settings .= '<tr><td valign="middle" align="left"><span style="border-bottom: 1px dashed; cursor: help;" title="'.$setting['description'].'">'.$setting['title'].'</span></td><td valign="middle" align="right">'.$value.'</td></tr>';
+		$desc = 'newpoints_setting_'.$setting['name'].'_desc';
+		$title = 'newpoints_setting_'.$setting['name'].'_title';
+
+		$income_settings .= '<tr><td valign="middle" align="left"><span style="border-bottom: 1px dashed; cursor: help;" title="'."{$lang->{$desc}}".'">'."{$lang->{$title}}".'</span></td><td valign="middle" align="right">'.$value.'</td></tr>';
 	}
 	
 	$lang->newpoints_home_desc = $lang->sprintf($lang->newpoints_home_desc, $income_settings);
