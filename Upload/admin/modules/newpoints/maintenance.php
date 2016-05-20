@@ -226,7 +226,7 @@ elseif ($mybb->input['action'] == 'recount')
 			$firstposts = array(0);
 				
 			// threads and polls
-			$totalthreads_query = $db->simple_select("threads", "firstpost,fid,poll", "uid='".$user['uid']."'");
+			$totalthreads_query = $db->simple_select("threads", "firstpost,fid,poll", "uid='".$user['uid']."' AND visible=1");
 			while ($thread = $db->fetch_array($totalthreads_query))
 			{
 				if ($mybb->settings['newpoints_income_newthread'] == 0)
@@ -258,7 +258,7 @@ elseif ($mybb->input['action'] == 'recount')
 			}
 			
 			// posts
-			$totalposts_query = $db->simple_select("posts", "fid,message", "uid='".$user['uid']."' AND pid NOT IN(".implode(',', $firstposts).")");
+			$totalposts_query = $db->simple_select("posts", "fid,message", "uid='".$user['uid']."' AND pid NOT IN(".implode(',', $firstposts).") AND visible=1");
 			while ($post = $db->fetch_array($totalposts_query))
 			{
 				if ($mybb->settings['newpoints_income_newpost'] == 0)
