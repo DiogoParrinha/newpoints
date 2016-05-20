@@ -128,7 +128,7 @@ if ($mybb->input['action'] == 'stats')
 	$richest_users = '';
 	$bgcolor = alt_trow();
 	
-	$fields = array('uid', 'username', 'newpoints');
+	$fields = array('uid', 'username', 'newpoints', 'usergroup', 'displaygroup');
 	
 	$plugins->run_hooks("newpoints_stats_start");
 
@@ -137,7 +137,7 @@ if ($mybb->input['action'] == 'stats')
 	while($user = $db->fetch_array($query)) {
 		$bgcolor = alt_trow();
 		
-		$user['username'] = build_profile_link(htmlspecialchars_uni($user['username']), intval($user['uid']));
+		$user['username'] = build_profile_link(format_name(htmlspecialchars_uni($user['username']), $user['usergroup'], $user['displaygroup']), intval($user['uid']));
 		$user['newpoints'] = newpoints_format_points($user['newpoints']);
 		
 		$plugins->run_hooks("newpoints_stats_richest_users");
@@ -158,15 +158,21 @@ if ($mybb->input['action'] == 'stats')
 	$bgcolor = alt_trow();
 	
 	// get latest donations
-
-	$query = $db->simple_select('newpoints_log', '*', 'action=\'donation\'', array('order_by' => 'date', 'order_dir' => 'DESC', 'limit' => intval($mybb->settings['newpoints_main_stats_lastdonations'])));
+	$query = $db->query("
+		SELECT l.*,u.usergroup,u.displaygroup
+		FROM ".TABLE_PREFIX."newpoints_log l
+		LEFT JOIN ".TABLE_PREFIX."users u ON (u.uid=l.uid)
+		WHERE l.action='donation'
+		ORDER BY l.date DESC
+		LIMIT ".intval($mybb->settings['newpoints_main_stats_lastdonations'])."
+	");
 	while($donation = $db->fetch_array($query)) {
 		$bgcolor = alt_trow();
 		
 		$data = explode('-', $donation['data']);
 		
 		$donation['to'] = build_profile_link(htmlspecialchars_uni($data[0]), intval($data[1]));
-		$donation['from'] = build_profile_link(htmlspecialchars_uni($donation['username']), intval($donation['uid']));
+		$donation['from'] = build_profile_link(format_name(htmlspecialchars_uni($donation['username']), $donation['usergroup'], $donation['displaygroup']), intval($donation['uid']));
 		
 		$donation['amount'] = newpoints_format_points($data[2]);
 		$donation['date'] = my_date($mybb->settings['dateformat'], intval($donation['date']), '', false).", ".my_date($mybb->settings['timeformat'], intval($donation['date']));
