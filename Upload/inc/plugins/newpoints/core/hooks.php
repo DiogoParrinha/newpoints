@@ -288,7 +288,7 @@ elseif (NP_HOOKS == 2)
 		if ($mybb->input['action'] != "do_newreply" || $post['savedraft'])
 			return;
 		
-		if($data->thread_insert_data['visible'] != 1)
+		if($data->post_insert_data['visible'] != 1)
 		{
 			// If it's not visible, then we may have moderation (drafts are already considered above so it doesn't matter here)
 			return;
