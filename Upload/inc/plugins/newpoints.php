@@ -63,6 +63,7 @@ elseif(THIS_SCRIPT == 'member.php')
 }
 	
 define('NEWPOINTS_VERSION', '2.1');
+define('NEWPOINTS_VERSION_CODE', '21');
 define('MAX_DONATIONS_CONTROL', '5'); // Maximum donations someone can send each 15 minutes
 
 // load plugins and do other stuff
@@ -540,76 +541,11 @@ function newpoints_format_points($points)
 /**
  * Sends a PM to a user
  * 
- * @param array: The PM to be sent; should have 'subject', 'message', 'touid' and 'receivepms'
- * (receivepms is for admin override in case the user has disabled pm's)
- * @param int: from user id (0 if you want to use the uid of the person that sends it. -1 to use MyBB Engine
- * @return bool: true if PM sent
+ * It's a wrapper for MyBB's function because in the past NewPoints provided a functio while MyBB did not.
  */
 function newpoints_send_pm($pm, $fromid = 0)
 {
-	global $lang, $mybb, $db;
-	if($mybb->settings['enablepms'] == 0)
-		return false;
-		
-	if (!is_array($pm))
-		return false;
-		
-	if (!$pm['subject'] ||!$pm['message'] || !$pm['touid'] || !$pm['receivepms'])
-		return false;
-	
-	$lang->load('messages');
-	
-	require_once MYBB_ROOT."inc/datahandlers/pm.php";
-	
-	$pmhandler = new PMDataHandler();
-	
-	$subject = $pm['subject'];
-	$message = $pm['message'];
-	$toid = $pm['touid'];
-	
-	if (is_array($toid))
-		$recipients_to = $toid;
-	else
-		$recipients_to = array($toid);
-		
-	$recipients_bcc = array();
-	
-	if (intval($fromid) == 0)
-		$fromid = intval($mybb->user['uid']);
-	elseif (intval($fromid) < 0)
-		$fromid = 0;
-	
-	$pm = array(
-		"subject" => $subject,
-		"message" => $message,
-		"icon" => -1,
-		"fromid" => $fromid,
-		"toid" => $recipients_to,
-		"bccid" => $recipients_bcc,
-		"do" => '',
-		"pmid" => ''
-	);
-	
-	$pm['options'] = array(
-		"signature" => 0,
-		"disablesmilies" => 0,
-		"savecopy" => 0,
-		"readreceipt" => 0
-	);
-	
-	$pm['saveasdraft'] = 0;
-	$pmhandler->admin_override = 1;
-	$pmhandler->set_data($pm);
-	if($pmhandler->validate_pm())
-	{
-		$pmhandler->insert_pm();
-	}
-	else
-	{
-		return false;
-	}
-	
-	return true;
+	return send_pm($pm, $fromid);
 }
 
 /**

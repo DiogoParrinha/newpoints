@@ -40,6 +40,7 @@ $l['newpoints_task_ran'] = 'Backup NewPoints task ran';
 ///////////////// Plugins
 $l['newpoints_plugins'] = 'Plugins';
 $l['newpoints_plugins_description'] = 'Here you can manage NewPoints plugins.';
+$l['newpoints_plugin_incompatible'] = "This plugin is incompatible with NewPoints {1}";
 
 ///////////////// Settings
 $l['newpoints_settings'] = 'Settings';

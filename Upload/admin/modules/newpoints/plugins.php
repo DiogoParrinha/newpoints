@@ -99,7 +99,7 @@ if($mybb->input['action'] == "activate" || $mybb->input['action'] == "deactivate
 		
 		if(!newpoints_iscompatible($codename))
 		{
-			flash_message($lang->sprintf($lang->plugin_incompatible, NEWPOINTS_VERSION), 'error');
+			flash_message($lang->sprintf($lang->newpoints_plugin_incompatible, NEWPOINTS_VERSION), 'error');
 			admin_redirect("index.php?module=newpoints-plugins");
 		}
 
@@ -201,7 +201,7 @@ if (!$mybb->input['action']) // view plugins
 
 			if(!newpoints_iscompatible($plugininfo))
 			{
-				$compatibility_warning = "<span style=\"color: red;\">".$lang->sprintf($lang->plugin_incompatible, NEWPOINTS_VERSION)."</span>";
+				$compatibility_warning = "<span style=\"color: red;\">".$lang->sprintf($lang->newpoints_plugin_incompatible, NEWPOINTS_VERSION)."</span>";
 			}
 			else
 			{
@@ -261,14 +261,21 @@ if (!$mybb->input['action']) // view plugins
 			// Plugin is installed but not active
 			else if($installed == true)
 			{
-				$table->construct_cell("<a href=\"index.php?module=newpoints-plugins&amp;action=activate&amp;plugin={$codename}&amp;my_post_key={$mybb->post_code}\">{$lang->activate}</a>", array("class" => "align_center", "width" => 150));
-				if($uninstall_button)
+				if($compatibility_warning && !$uninstall_button)
 				{
-					$table->construct_cell("<a href=\"index.php?module=newpoints-plugins&amp;action=deactivate&amp;uninstall=1&amp;plugin={$codename}&amp;my_post_key={$mybb->post_code}\">{$lang->uninstall}</a>", array("class" => "align_center", "width" => 150));
+					$table->construct_cell("{$compatibility_warning}", array("class" => "align_center", "colspan" => 2));
 				}
 				else
 				{
-					$table->construct_cell("&nbsp;", array("class" => "align_center", "width" => 150));
+					$table->construct_cell("<a href=\"index.php?module=newpoints-plugins&amp;action=activate&amp;plugin={$codename}&amp;my_post_key={$mybb->post_code}\">{$lang->activate}</a>", array("class" => "align_center", "width" => 150));
+					if($uninstall_button)
+					{
+						$table->construct_cell("<a href=\"index.php?module=newpoints-plugins&amp;action=deactivate&amp;uninstall=1&amp;plugin={$codename}&amp;my_post_key={$mybb->post_code}\">{$lang->uninstall}</a>", array("class" => "align_center", "width" => 150));
+					}
+					else
+					{
+						$table->construct_cell("&nbsp;", array("class" => "align_center", "width" => 150));
+					}
 				}
 			}
 			$table->construct_row();
@@ -327,7 +334,7 @@ function newpoints_iscompatible($plugininfo)
 		$infofunc = $plugininfo."_info";
 		if(!function_exists($infofunc))
 		{
-			return;
+			return false;
 		}
 		
 		$plugininfo = $infofunc();
@@ -344,11 +351,14 @@ function newpoints_iscompatible($plugininfo)
 		$version = trim($version);
 		$version = str_replace("*", ".+", preg_quote($version));
 		$version = str_replace("\.+", ".+", $version);
-		if(preg_match("#{$version}#i", NEWPOINTS_VERSION))
+
+		if(preg_match("#{$version}#i", NEWPOINTS_VERSION_CODE))
 		{
 			return true;
 		}
 	}
+	
+	return false;
 }
 
 ?>
