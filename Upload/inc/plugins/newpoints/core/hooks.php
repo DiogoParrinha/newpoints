@@ -131,6 +131,10 @@ elseif (NP_HOOKS == 2)
 	$plugins->add_hook('datahandler_post_insert_thread', 'newpoints_newthread');
 	// delete thread
 	$plugins->add_hook('class_moderation_delete_thread', 'newpoints_deletethread');
+	// soft delete threads
+	$plugins->add_hook('class_moderation_soft_delete_threads', 'newpoints_softdeletethreads');
+	// restore soft deleted threads
+	$plugins->add_hook('class_moderation_restore_threads', 'newpoints_restorethreads');
 	
 	// per new poll
 	$plugins->add_hook('polls_do_newpoll_process', 'newpoints_newpoll');
@@ -696,7 +700,7 @@ elseif (NP_HOOKS == 2)
 		newpoints_addpoints($post['uid'], -$mybb->settings['newpoints_income_newpost']-$bonus, $forumrules['rate'], $grouprules['rate']);
 	}
 
-	// delete posts
+	// soft delete posts
 	function newpoints_softdeleteposts($pids)
 	{
 		global $db, $mybb, $fid;
@@ -988,6 +992,11 @@ elseif (NP_HOOKS == 2)
 		$thread = get_thread((int)$tid);
 		$fid = $thread['fid'];
 		
+		// It's currently soft deleted, so we do nothing as we already subtracted points when doing that
+		// If it's not visible (unapproved) we also don't take out any money
+		if($thread['visible'] == -1 || $thread['visible'] == 0)
+			return;
+		
 		// check forum rules
 		$forumrules = newpoints_getrules('forum', $fid);
 		if (!$forumrules)
@@ -1028,6 +1037,126 @@ elseif (NP_HOOKS == 2)
 		
 		// take out points from the author of the thread
 		newpoints_addpoints($thread['uid'], -$mybb->settings['newpoints_income_newthread']-$bonus, $forumrules['rate'], $grouprules['rate']);
+	}
+	
+	// soft delete threads
+	function newpoints_softdeletethreads($tids)
+	{
+		global $db, $mybb, $fid;
+		
+		if (!$mybb->user['uid'])
+			return;
+		
+		if ($mybb->settings['newpoints_main_enabled'] != 1)
+			return;
+			
+		if ($mybb->settings['newpoints_income_newthread'] == 0)
+			return;
+		
+		if(!empty($tids))
+		{
+			foreach($tids as $tid)
+			{
+				$thread = get_thread($tid);
+				$post = get_post((int)$thread['firstpost']);
+				
+				// check forum rules
+				$forumrules = newpoints_getrules('forum', $fid);
+				if (!$forumrules)
+					$forumrules['rate'] = 1; // no rule set so default income rate is 1
+				
+				// if the forum rate is 0, nothing is going to be removed so let's just leave the function
+				if ($forumrules['rate'] == 0)
+					return;
+				
+				// check group rules - primary group check
+				$grouprules = newpoints_getrules('group', $mybb->user['usergroup']);
+				if (!$grouprules)
+					$grouprules['rate'] = 1; // no rule set so default income rate is 1
+				
+				// if the group rate is 0, nothing is going to be removed so let's just leave the function
+				if ($grouprules['rate'] == 0)
+					return;
+
+				// calculate points per character bonus
+				// let's see if the number of characters in the post is greater than the minimum characters
+				if (($charcount = newpoints_count_characters($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
+					$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
+				else
+					$bonus = 0;
+				
+				// the post author != thread author?
+				if ($thread['uid'] != $post['uid'])
+				{
+					// we are not the thread started so remove points from him/her
+					if ($mybb->settings['newpoints_income_perreply'] != 0)
+						newpoints_addpoints($thread['uid'], -$mybb->settings['newpoints_income_perreply'], $forumrules['rate'], $grouprules['rate']);
+				}
+				
+				// remove points from the poster
+				newpoints_addpoints($post['uid'], -$mybb->settings['newpoints_income_newthread']-$bonus, $forumrules['rate'], $grouprules['rate']);
+			}
+		}
+	}
+	
+	// restore threads
+	function newpoints_restorethreads($tids)
+	{
+		global $db, $mybb, $fid;
+		
+		if (!$mybb->user['uid'])
+			return;
+		
+		if ($mybb->settings['newpoints_main_enabled'] != 1)
+			return;
+			
+		if ($mybb->settings['newpoints_income_newthread'] == 0)
+			return;
+		
+		if(!empty($tids))
+		{
+			foreach($tids as $tid)
+			{
+				$thread = get_thread($tid);
+				$post = get_post((int)$thread['firstpost']);
+				
+				// check forum rules
+				$forumrules = newpoints_getrules('forum', $fid);
+				if (!$forumrules)
+					$forumrules['rate'] = 1; // no rule set so default income rate is 1
+				
+				// if the forum rate is 0, nothing is going to be removed so let's just leave the function
+				if ($forumrules['rate'] == 0)
+					return;
+				
+				// check group rules - primary group check
+				$grouprules = newpoints_getrules('group', $mybb->user['usergroup']);
+				if (!$grouprules)
+					$grouprules['rate'] = 1; // no rule set so default income rate is 1
+				
+				// if the group rate is 0, nothing is going to be removed so let's just leave the function
+				if ($grouprules['rate'] == 0)
+					return;
+
+				// calculate points per character bonus
+				// let's see if the number of characters in the post is greater than the minimum characters
+				if (($charcount = newpoints_count_characters($post['message'])) >= $mybb->settings['newpoints_income_minchar']) 
+					$bonus = $charcount * $mybb->settings['newpoints_income_perchar'];
+				else
+					$bonus = 0;
+				
+				// the post author != thread author?
+				if ($thread['uid'] != $post['uid'])
+				{
+					// we are not the thread started so give points to them
+					if ($mybb->settings['newpoints_income_perreply'] != 0)
+						newpoints_addpoints($thread['uid'], $mybb->settings['newpoints_income_perreply'], $forumrules['rate'], $grouprules['rate']);
+				}
+				
+				// give points to the author of the post
+				newpoints_addpoints($post['uid'], $mybb->settings['newpoints_income_newthread']+$bonus, $forumrules['rate'], $grouprules['rate']);
+			}
+		}
 	}
 
 	// new poll
