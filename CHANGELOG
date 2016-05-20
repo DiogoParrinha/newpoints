@@ -12,6 +12,13 @@ From version 2.0 to 2.1:
 * Added 'numeric' field type to settings.
 * Fixed a few other bugs.
 * Settings can now be translated on the front-end (see language file)
+* Points are not given if a new post or thread is automatically put into moderation.
+* Points are removed if a thread/post is unapproved.
+* Points are given back when a thread/post is approved.
+* Fixed bug in plugin compatibility check in ACP.
+* Recounting tool will only count visible posts and threads now.
+* send_pm function bug fixed (affected ACP in MyBB 1.8).
+* Added username styles to Statistics (except for second column of the Last Donations for performance reasons)
 
 From version 1.9.9 to 2.0:
 * Compatible with MyBB 1.8.

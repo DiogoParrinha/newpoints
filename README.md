@@ -43,63 +43,13 @@ NewPoints is in its most stable stage since it has reached v2. Enjoy it!
 1. Upload the contents of the "Upload" folder to the root of your MyBB installation.
 2. Install and Activate NewPoints from the Admin CP and chmod the backups directory (admin/backups/backupnewpoints) to 777.
 3. If you want to activate weekly backups, just enable the "Backup NewPoints" task from your Admin CP.
+4. If you want to configure the maximum donations per 15 minutes, you must edit inc/plugins/newpoints.php and search for MAX_DONATIONS_CONTROL.
 
 ### Upgrade
-**Upgrading from 1.9.5/1.9.6/1.9.7/1.9.8 to 2.0**
+**Upgrading from 1.9.5/1.9.6/1.9.7/1.9.8/2.0 to 2.1**
 
 Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.9.5/1.9.6/1.9.7/1.9.8 to 1.9.9**
-
-Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.9.5 to 1.9.6**
-
-Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.9.4 to 1.9.5**
-
-Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-Then, go to Admin CP -> NewPoints -> Upgrades -> Run the "Upgrade to 1.9.5" upgrade.
-
-**Upgrading from 1.9/1.9.1/1.9.2/1.9.3 to 1.9.4**
-
-Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.8 to 1.9**
-
-Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-Then, go to Admin CP -> NewPoints -> Upgrades -> Run the "Upgrade to 1.9" upgrade.
-
-**Upgrading from 1.7 to 1.8**
-
-Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.6 to 1.7**
-
-Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.5 to 1.6**
-
-Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.4 to 1.5**
-
-Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.3 to 1.4**
-
-Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-If you had Bank 1.0 installed, you'll also have to deactivate it and activate it back.
-
-**Upgrading from 1.2 to 1.3**
-
-Simply upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-
-**Upgrading from 1.1 to 1.3**
-
-Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
-Then, go to Admin CP -> NewPoints -> Upgrades -> Run the "Upgrade to 1.2" upgrade. Note that your old group and forum rules will be deleted.
+Deactivate and activate the plugin back.
 
 ### Instructions
 **Plugins**
