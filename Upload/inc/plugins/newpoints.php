@@ -131,15 +131,17 @@ if (defined('IN_ADMINCP'))
 	}
 }
 
+
 function newpoints_count_characters($message)
 {
 	// Attempt to remove any quotes
-	$message = preg_replace(array(
-		'#\[quote=([\"\']|&quot;|)(.*?)(?:\\1)(.*?)(?:[\"\']|&quot;)?\](.*?)\[/quote\](\r\n?|\n?)#esi',
+	
+	$message = preg_replace_callback(array(
+		'#\[quote=([\"\']|&quot;|)(.*?)(?:\\1)(.*?)(?:[\"\']|&quot;)?\](.*?)\[/quote\](\r\n?|\n?)#si',
 		'#\[quote\](.*?)\[\/quote\](\r\n?|\n?)#si',
 		'#\[quote\]#si',
 		'#\[\/quote\]#si'
-	), '', $message);
+	), function($match){return $match[0];}, $message);
 
 	// Attempt to remove any MyCode
 	global $parser;
@@ -159,22 +161,22 @@ function newpoints_count_characters($message)
 	));
 
 	// before stripping tags, try converting some into spaces
-	$message = preg_replace(array(
+	$message = preg_replace_callback(array(
 		'~\<(?:img|hr).*?/\>~si',
 		'~\<li\>(.*?)\</li\>~si'
-	), array(' ', "\n* $1"), $message);
+	), function ($matches){return array(' ', "\n* $1");}, $message);
 
 	$message = unhtmlentities(strip_tags($message));
 
 	// Remove all spaces?
 	$message = trim_blank_chrs($message);
-	$message = preg_replace('/\s+/', '', $message);
+	$message = preg_replace_callback('/\s+/', function ($matches){return '';}, $message);
 
 	// convert \xA0 to spaces (reverse &nbsp;)
-	$message = trim(preg_replace(array('~ {2,}~', "~\n{2,}~"), array(' ', "\n"), strtr($message, array("\xA0" => utf8_encode("\xA0"), "\r" => '', "\t" => ' '))));
+	$message = trim(preg_replace_callback(array('~ {2,}~', "~\n{2,}~"),function ($matches){return array(' ', "\n");}, strtr($message, array("\xA0" => utf8_encode("\xA0"), "\r" => '', "\t" => ' '))));
 
 	// newline fix for browsers which don't support them
-	$message = preg_replace("~ ?\n ?~", " \n", $message);
+	$message = preg_replace_callback("~ ?\n ?~", function ($matches){return  " \n";}, $message);
 
 	return (int)my_strlen($message);
 }
@@ -193,7 +195,7 @@ function newpoints_jsspecialchars($str)
 {
 	// Converts & -> &amp; allowing Unicode
 	// Parses out HTML comments as the XHTML validator doesn't seem to like them
-	$string = preg_replace(array("#\<\!--.*?--\>#", "#&(?!\#[0-9]+;)#"), array('','&amp;'), $str);
+	$string = preg_replace_callback(array("#\<\!--.*?--\>#", "#&(?!\#[0-9]+;)#"), function ($matches){return  array('','&amp;');}, $str);
 	return strtr($string, array("\n" => '\n', "\r" => '\r', '\\' => '\\\\', '"' => '\x22', "'" => '\x27', '<' => '&lt;', '>' => '&gt;'));
 }
 
@@ -610,7 +612,7 @@ function newpoints_find_replace_templatesets($title, $find, $replace)
 			{
 				return false;
 			}
-			$newtemplate = preg_replace($find, $replace, $template['template']);
+			$newtemplate = preg_replace_callback($find, $replace, $template['template']);
 			$template['template'] = $newtemplate;
 			$update[] = $template;
 		}
