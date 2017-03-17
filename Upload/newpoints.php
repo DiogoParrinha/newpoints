@@ -113,9 +113,9 @@ if (!$mybb->input['action'])
 	
 	$lang->newpoints_home_desc = $lang->sprintf($lang->newpoints_home_desc, $income_settings);
 	
-	eval("\$page = \"".$templates->get('newpoints_home')."\";");
-	
 	$plugins->run_hooks("newpoints_home_end");
+	
+	eval("\$page = \"".$templates->get('newpoints_home')."\";");
 	
 	output_page($page);
 }
@@ -240,7 +240,7 @@ elseif ($mybb->input['action'] == 'do_donate')
 	
 	// make sure we're not trying to send a donation to ourselves
 	$username = trim($mybb->input['username']);
-	if ($username == $mybb->user['username'])
+	if (my_strtolower($username) == my_strtolower($mybb->user['username']))
 		error($lang->newpoints_cant_donate_self);
 	
 	$amount = round(floatval($mybb->input['amount']), (int)$mybb->settings['newpoints_main_decimal']);
