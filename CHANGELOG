@@ -1,3 +1,8 @@
+From version 2.1 to 2.1:
+* Fixed bug in group rules payout.
+* Fixed bug in donations to self.
+* Fixed compatibility issue with PHP 7
+
 From version 2.0 to 2.1:
 * Improved character count system (thanks to Omar G. - http://forums.mybb-plugins.com/Thread-OUGC-Post-Character-Count-Enhancement)
 * Deleted users' posts would display 0 points and the donate link: when showing the user as "Guest"

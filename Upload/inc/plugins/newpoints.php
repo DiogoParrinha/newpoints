@@ -62,8 +62,8 @@ elseif(THIS_SCRIPT == 'member.php')
     $templatelist .= 'newpoints_profile,newpoints_donate_inline';
 }
 	
-define('NEWPOINTS_VERSION', '2.1');
-define('NEWPOINTS_VERSION_CODE', '21');
+define('NEWPOINTS_VERSION', '2.1.1');
+define('NEWPOINTS_VERSION_CODE', '211');
 define('MAX_DONATIONS_CONTROL', '5'); // Maximum donations someone can send each 15 minutes
 
 // load plugins and do other stuff
@@ -135,7 +135,7 @@ function newpoints_count_characters($message)
 {
 	// Attempt to remove any quotes
 	$message = preg_replace(array(
-		'#\[quote=([\"\']|&quot;|)(.*?)(?:\\1)(.*?)(?:[\"\']|&quot;)?\](.*?)\[/quote\](\r\n?|\n?)#esi',
+		'#\[quote=([\"\']|&quot;|)(.*?)(?:\\1)(.*?)(?:[\"\']|&quot;)?\](.*?)\[/quote\](\r\n?|\n?)#si',
 		'#\[quote\](.*?)\[\/quote\](\r\n?|\n?)#si',
 		'#\[quote\]#si',
 		'#\[\/quote\]#si'
