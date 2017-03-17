@@ -1403,14 +1403,15 @@ elseif (NP_HOOKS == 2)
 		{
 			if ($rule['pointsearn'] == 0 || $rule['period'] == 0 || $rule['lastpay']>(TIME_NOW - $rule['period']))
 				return;
-				
-			//die("testing".$rule['pointsearn']." | ".$rule['period']." | ".$rule['lastpay']." | ".TIME_NOW);
 
 			$amount = floatval($rule['pointsearn']);
 
 			$userupdates[$gid] = $amount;
 			// update rule with last payment
-			$db->update_query('newpoints_grouprules', array('lastpay' => TIME_NOW), 'gid=\''.$gid.'\'');
+			$db->update_query('newpoints_grouprules', array('lastpay' => TIME_NOW), 'rid=\''.(int)$rule['rid'].'\'');
+			
+			// Re-cache rules (lastpay must be updated)
+			newpoints_rebuild_rules_cache();
 					
 			if($mybb->user['usergroup'] == $gid)
 				$mybb->user['newpoints'] += $amount;
