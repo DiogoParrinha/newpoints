@@ -111,9 +111,9 @@ if (!$mybb->input['action'])
 		$income_settings .= '<tr><td valign="middle" align="left"><span style="border-bottom: 1px dashed; cursor: help;" title="'."{$lang->{$desc}}".'">'."{$lang->{$title}}".'</span></td><td valign="middle" align="right">'.$value.'</td></tr>';
 	}
 	
-	$lang->newpoints_home_desc = $lang->sprintf($lang->newpoints_home_desc, $income_settings);
+	$plugins->run_hooks("newpoints_home_end", $income_settings);
 	
-	$plugins->run_hooks("newpoints_home_end");
+	$lang->newpoints_home_desc = $lang->sprintf($lang->newpoints_home_desc, $income_settings);
 	
 	eval("\$page = \"".$templates->get('newpoints_home')."\";");
 	
