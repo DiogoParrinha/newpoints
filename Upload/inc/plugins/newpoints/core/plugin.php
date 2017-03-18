@@ -467,7 +467,7 @@ if(use_xmlhttprequest == "1")
 <td class="thead"><strong>{$lang->newpoints}</strong></td>
 </tr>
 <tr>
-<td class="trow1">{$lang->newpoints_home_desc}</td>
+<td class="trow1">{$lang->newpoints_home_desc}<br />{$lang->newpoints_home_credits}</td>
 </tr>
 </table>
 </td>
