@@ -37,7 +37,7 @@ function newpoints_plugin_info()
 		"website"		=> "http://www.consoleaddicted.com",
 		"author"		=> "Pirata Nervo",
 		"authorsite"	=> "http://www.mybb-plugins.com",
-		"version"		=> "2.1.1",
+		"version"		=> "2.1.2",
 		"guid" 			=> "152e7f9f32fadb777d58fda000eb7a9e",
 		"compatibility" => "18*"
 	);

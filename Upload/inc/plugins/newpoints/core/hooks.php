@@ -1402,7 +1402,7 @@ elseif (NP_HOOKS == 2)
 		foreach($grouprules as $gid => $rule)
 		{
 			if ($rule['pointsearn'] == 0 || $rule['period'] == 0 || $rule['lastpay']>(TIME_NOW - $rule['period']))
-				return;
+				continue;
 
 			$amount = floatval($rule['pointsearn']);
 

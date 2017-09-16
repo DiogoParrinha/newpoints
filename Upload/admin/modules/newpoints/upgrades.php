@@ -109,7 +109,9 @@ elseif ($mybb->input['action'] == 'run')
 		$runfunc = $upgrade."_run";
 		if(!function_exists($runfunc))
 		{
-			continue;
+			$mybb->request_method = "get";
+			flash_message($lang->newpoints_error, 'error');
+			admin_redirect("index.php?module=newpoints-upgrades");
 		}
 		
 		$runfunc();

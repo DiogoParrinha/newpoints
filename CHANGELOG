@@ -1,4 +1,7 @@
-From version 2.1 to 2.1:
+From version 2.1.1 to 2.1.2:
+* Fixed bug in group rules payout.
+
+From version 2.1 to 2.1.1:
 * Fixed bug in group rules payout.
 * Fixed bug in donations to self.
 * Fixed compatibility issue with PHP 7
