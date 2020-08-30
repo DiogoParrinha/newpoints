@@ -4,24 +4,24 @@
  *   NewPoints plugin (/inc/plugins/newpoints/core/plugin.php)
  *	 Author: Pirata Nervo
  *   Copyright: © 2014 Pirata Nervo
- *   
+ *
  *   Website: http://www.mybb-plugins.com
  *
  *   NewPoints plugin for MyBB - A complex but efficient points system for MyBB.
  *
  ***************************************************************************/
- 
+
 /****************************************************************************
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
@@ -35,7 +35,7 @@ function newpoints_plugin_info()
 		"name"			=> "NewPoints",
 		"description"	=> "NewPoints is a complex but efficient points system for MyBB.",
 		"website"		=> "http://www.consoleaddicted.com",
-		"author"		=> "Pirata Nervo",
+		"author"		=> "Diogo Parrinha",
 		"authorsite"	=> "http://www.mybb-plugins.com",
 		"version"		=> "2.1.2",
 		"guid" 			=> "152e7f9f32fadb777d58fda000eb7a9e",
@@ -46,9 +46,9 @@ function newpoints_plugin_info()
 function newpoints_plugin_install()
 {
 	global $db, $mybb;
-	
+
 	$collation = $db->build_create_table_collation();
-	
+
 	// create tables
 	if(!$db->table_exists("newpoints_settings"))
     {
@@ -64,7 +64,7 @@ function newpoints_plugin_install()
 		  PRIMARY KEY  (`sid`)
 			) ENGINE=MyISAM{$collation}");
 	}
-	
+
 	if(!$db->table_exists("newpoints_log"))
     {
 		$db->write_query("CREATE TABLE `".TABLE_PREFIX."newpoints_log` (
@@ -77,7 +77,7 @@ function newpoints_plugin_install()
 		  PRIMARY KEY  (`lid`)
 			) ENGINE=MyISAM{$collation}");
 	}
-	
+
 	if(!$db->table_exists("newpoints_forumrules"))
     {
 		$db->write_query("CREATE TABLE `".TABLE_PREFIX."newpoints_forumrules` (
@@ -91,7 +91,7 @@ function newpoints_plugin_install()
 		  PRIMARY KEY  (`rid`)
 			) ENGINE=MyISAM{$collation}");
 	}
-	
+
 	if(!$db->table_exists("newpoints_grouprules"))
     {
 		$db->write_query("CREATE TABLE `".TABLE_PREFIX."newpoints_grouprules` (
@@ -106,7 +106,7 @@ function newpoints_plugin_install()
 		  PRIMARY KEY  (`rid`)
 			) ENGINE=MyISAM{$collation}");
 	}
-	
+
 	// add settings
 	newpoints_add_setting('newpoints_main_enabled', 'main', 'Is NewPoints enabled?', 'Set to no if you want to disable NewPoints.', 'yesno', 1, 1);
 	newpoints_add_setting('newpoints_main_curname', 'main', 'Currency Name', 'Enter a name for the currency.', 'text', 'Points', 2);
@@ -118,7 +118,7 @@ function newpoints_plugin_install()
 	newpoints_add_setting('newpoints_main_donationspm', 'main', 'Send a PM on donate?', 'Do you want it to automatically send a new private message to a user receiving a donation?', 'yesno', 1, 8);
 	newpoints_add_setting('newpoints_main_stats_lastdonations', 'main', 'Last donations', 'Number of last donations to show.', 'text', 10, 9);
 	newpoints_add_setting('newpoints_main_stats_richestusers', 'main', 'Richest Users', 'Number of richest users to show.', 'text', 10, 9);
-	
+
 	// income settings
 	newpoints_add_setting('newpoints_income_newpost', 'income', 'New Post', 'Amount of points received on new post.', 'text', '10', 1);
 	newpoints_add_setting('newpoints_income_newthread', 'income', 'New Thread', 'Amount of points received on new thread.', 'text', '20', 2);
@@ -133,16 +133,16 @@ function newpoints_plugin_install()
 	newpoints_add_setting('newpoints_income_pageview', 'income', 'Per Page View', 'Amount of points received everytime a user views a page.', 'text', '0', 10);
 	newpoints_add_setting('newpoints_income_visit', 'income', 'Per Visit', 'Amount of points received everytime a user visits the forum. ("visits" = new MyBB session (expires after 15 minutes))', 'text', '0.1', 11);
 	newpoints_add_setting('newpoints_income_referral', 'income', 'Per Referral', 'Amount of points received everytime a user is referred. (the referred user is who receives the points)', 'text', '5', 12);
-	
+
 	//rebuild_settings();
-	
+
 	newpoints_rebuild_settings_cache();
 	newpoints_rebuild_rules_cache();
-	
+
 	// add points field
 	if (!$db->field_exists('newpoints', 'users'))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` ADD `newpoints` DECIMAL(16,2) NOT NULL DEFAULT '0';");
-	
+
 	// create task
 	$new_task = array(
 		"title" => "Backup NewPoints",
@@ -156,7 +156,7 @@ function newpoints_plugin_install()
 		"enabled" => '0',
 		"logging" => '1'
 	);
-	
+
 	$new_task['nextrun'] = 0; // once the task is enabled, it will generate a nextrun date
 	$tid = $db->insert_query("tasks", $new_task);
 }
@@ -164,7 +164,7 @@ function newpoints_plugin_install()
 function newpoints_plugin_is_installed()
 {
 	global $db;
-	
+
 	if($db->table_exists('newpoints_settings'))
 		return true;
 	else
@@ -174,11 +174,11 @@ function newpoints_plugin_is_installed()
 function newpoints_plugin_uninstall()
 {
 	global $db, $mybb, $cache, $plugins, $theme, $templates, $lang;
-	
+
 	// uninstall plugins
 	$plugins_cache = $cache->read("newpoints_plugins");
 	$active_plugins = $plugins_cache['active'];
-	
+
 	if (!empty($active_plugins))
 	{
 		foreach($active_plugins as $plugin)
@@ -186,49 +186,49 @@ function newpoints_plugin_uninstall()
 			// Ignore missing plugins
 			if(!file_exists(MYBB_ROOT."inc/plugins/newpoints/".$plugin.".php"))
 				continue;
-		
+
 			require_once MYBB_ROOT."inc/plugins/newpoints/".$plugin.".php";
-		
+
 			if(function_exists("{$plugin}_deactivate"))
 			{
 				call_user_func("{$plugin}_deactivate");
 			}
-	
+
 			if(function_exists("{$plugin}_uninstall"))
 			{
 				call_user_func("{$plugin}_uninstall");
 			}
 		}
 	}
-	
+
 	// delete plugins cache
-	$db->delete_query('datacache', 'title=\'newpoints_plugins\''); 
-		
+	$db->delete_query('datacache', 'title=\'newpoints_plugins\'');
+
 	if ($db->field_exists('newpoints', 'users'))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` DROP `newpoints`;");
-	
+
 	// delete default main settings
 	newpoints_remove_settings("'newpoints_main_enabled','newpoints_main_curname','newpoints_main_curprefix','newpoints_main_cursuffix','newpoints_main_decimal','newpoints_main_statsvisible','newpoints_main_donationsenabled','newpoints_main_donationspm','newpoints_main_stats_lastdonations','newpoints_main_stats_richestusers'");
-	
+
 	// delete default income settings
 	newpoints_remove_settings("'newpoints_income_newpost','newpoints_income_newthread','newpoints_income_newpoll','newpoints_income_perchar','newpoints_income_minchar','newpoints_income_newreg','newpoints_income_pervote','newpoints_income_perreply','newpoints_income_pmsent','newpoints_income_perrate','newpoints_income_pageview','newpoints_income_visit','newpoints_income_referral'");
-	
+
 	// drop tables
 	if($db->table_exists('newpoints_settings'))
 		$db->drop_table('newpoints_settings');
-		
+
 	if($db->table_exists('newpoints_log'))
 		$db->drop_table('newpoints_log');
-		
+
 	if($db->table_exists('newpoints_forumrules'))
 		$db->drop_table('newpoints_forumrules');
-		
+
 	if($db->table_exists('newpoints_grouprules'))
 		$db->drop_table('newpoints_grouprules');
-	
+
 	//rebuild_settings();
-	
-	$db->delete_query('tasks', 'file=\'backupnewpoints\''); 
+
+	$db->delete_query('tasks', 'file=\'backupnewpoints\'');
 }
 
 function newpoints_plugin_do_template_edits()
@@ -252,15 +252,15 @@ function newpoints_plugin_undo_template_edits()
 function newpoints_plugin_activate()
 {
 	global $db, $lang;
-	
+
 	newpoints_add_template('newpoints_postbit', '<br /><span class="smalltext">{$currency}: <a href="{$mybb->settings[\'bburl\']}/newpoints.php">{$points}</a></span>{$donate}');
 	newpoints_add_template('newpoints_profile', '<tr>
 	<td class="trow2"><strong>{$currency}:</strong></td>
 	<td class="trow2"><a href="{$mybb->settings[\'bburl\']}/newpoints.php">{$points}</a>{$donate}</td>
 </tr>');
-	
+
 	newpoints_add_template('newpoints_donate_inline', ' <span class="smalltext">[<a href="{$mybb->settings[\'bburl\']}/newpoints.php?action=donate&amp;uid={$uid}">{$lang->newpoints_donate}</a>]</span>');
-	
+
 	newpoints_add_template('newpoints_donate', '
 <html>
 <head>
@@ -418,13 +418,13 @@ if(use_xmlhttprequest == "1")
 {$footer}
 </body>
 </html>');
-	
+
 	newpoints_add_template('newpoints_statistics_richest_user', '
 <tr>
 <td class="{$bgcolor}" width="50%">{$user[\'username\']}</td>
 <td class="{$bgcolor}" width="50%" align="center">{$user[\'newpoints\']}</td>
 </tr>');
-	
+
 	newpoints_add_template('newpoints_statistics_donation', '
 <tr>
 <td class="{$bgcolor}" width="30%">{$donation[\'from\']}</td>
@@ -432,17 +432,17 @@ if(use_xmlhttprequest == "1")
 <td class="{$bgcolor}" width="20%" align="center">{$donation[\'amount\']}</td>
 <td class="{$bgcolor}" width="20%" align="center">{$donation[\'date\']}</td>
 </tr>');
-	
+
 	newpoints_add_template('newpoints_no_results', '
 <tr>
 <td class="{$bgcolor}" width="100%" colspan="{$colspan}">{$no_results}</td>
 </tr>');
-	
+
 	newpoints_add_template('newpoints_option', '
 <tr>
 <td class="{$bgcolor}" width="100%">{$option}</td>
 </tr>');
-	
+
 	newpoints_add_template('newpoints_home', '
 <html>
 <head>
@@ -476,9 +476,9 @@ if(use_xmlhttprequest == "1")
 {$footer}
 </body>
 </html>');
-	
+
 	newpoints_do_template_edits();
-	
+
 	//Change admin permissions
 	change_admin_permission("newpoints", false, 1);
 	change_admin_permission("newpoints", "plugins", 1);
@@ -494,11 +494,11 @@ if(use_xmlhttprequest == "1")
 function newpoints_plugin_deactivate()
 {
 	global $db, $mybb;
-	
+
 	newpoints_remove_templates("'newpoints_postbit','newpoints_profile','newpoints_donate','newpoints_donate_inline','newpoints_statistics','newpoints_statistics_richest_user','newpoints_statistics_donation','newpoints_no_results','newpoints_option','newpoints_home'");
-	
+
 	newpoints_undo_template_edits();
-	
+
 	//Change admin permissions
 	change_admin_permission("newpoints", false, -1);
 	change_admin_permission("newpoints", "plugins", -1);

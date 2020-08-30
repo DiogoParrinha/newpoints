@@ -46,9 +46,13 @@ NewPoints is in its most stable stage since it has reached v2. Enjoy it!
 4. If you want to configure the maximum donations per 15 minutes, you must edit inc/plugins/newpoints.php and search for MAX_DONATIONS_CONTROL.
 
 ### Upgrade
+**Upgrading from 2.1.1 to 2.1.2**
+
+Upload the contents of the "Upload" folder to the root of your MyBB installation, overwriting the old files.
+
 **Upgrading from 1.9.5/1.9.6/1.9.7/1.9.8/2.0/2.1 to 2.1.1**
 
-Upload the contents of the "Upload" folder to the root of your MyBB installation, overwritting the old files.
+Upload the contents of the "Upload" folder to the root of your MyBB installation, overwriting the old files.
 Deactivate and activate the plugin back.
 
 ### Instructions
