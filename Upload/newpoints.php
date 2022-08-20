@@ -230,7 +230,7 @@ elseif ($mybb->input['action'] == 'do_donate')
 	
 	if($mybb->user['usergroup'] != 4)
 	{
-		$q = $db->simple_select('newpoints_log', 'COUNT(*) as donations', 'action=\'donation\' AND date>'.(TIME_NOW-15*60*60).' AND uid='.(int)$mybb->user['uid']);
+		$q = $db->simple_select('newpoints_log', 'COUNT(*) as donations', 'action=\'donation\' AND date>'.(TIME_NOW-15*60).' AND uid='.(int)$mybb->user['uid']);
 		$totaldonations = (int)$db->fetch_field($q, 'donations');
 		if($totaldonations >= MAX_DONATIONS_CONTROL)
 		{
